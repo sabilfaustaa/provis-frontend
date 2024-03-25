@@ -19,11 +19,42 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: darkPrimaryColor,
-        body: Center(
-            child: Text(
-          'Selamat Datang Di',
-          style: primaryTextStyle,
-        )));
+      body: Stack(
+        children: [
+          _buildBackground(),
+          _buildHeader(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBackground() {
+    return Container(
+      decoration: gradientAuthBoxDecoration,
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: defaultMargin),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Selamat Datang Di',
+                style: lightTextStyle.copyWith(fontSize: 16),
+              )),
+          SizedBox(height: 8),
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Image(
+                image: AssetImage("assets/digisehat-text.png"),
+                width: 300,
+              ))
+        ],
+      ),
+    );
   }
 }
