@@ -222,9 +222,16 @@ class _SignUpPageState extends State<SignUpPage> {
     return Column(
       children: <Widget>[
         buildTextField(
-            hint: 'Email',
+            hint: 'Penyakit / Alergi',
             obscureText: false,
             prefixIcon: Icons.email,
+            iconColor: primaryColor,
+            backgroundColor: khakiColor),
+        SizedBox(height: 16),
+        buildTextField(
+            hint: 'Tahun',
+            obscureText: false,
+            prefixIcon: Icons.data_exploration,
             iconColor: primaryColor,
             backgroundColor: khakiColor),
         SizedBox(height: 16),
