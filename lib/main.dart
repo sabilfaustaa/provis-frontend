@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:digisehat/pages/sign_in.dart';
 import 'package:digisehat/pages/sign_up.dart';
-import 'package:flutter/material.dart';
+import 'package:digisehat/pages/forgot_password.dart';
 import 'package:digisehat/pages/splash.dart';
 // import 'theme.dart';
 
@@ -16,9 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => SignUpPage(),
+        '/': (context) => ForgotPasswordPage(),
         // '/': (context) => SplashPage(),
         '/sign-in': (context) => SignInPage(),
+        '/forgot-password': (context) => ForgotPasswordPage(),
         '/sign-up': (context) => SignUpPage()
       },
     );
