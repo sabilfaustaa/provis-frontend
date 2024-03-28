@@ -29,8 +29,8 @@ class _CariDokterPageState extends State<CariDokterPage> {
             ),
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.30, // Set the initial size to 30% of the screen
-            minChildSize: 0.30,
+            initialChildSize: 0.70,
+            minChildSize: 0.70,
             maxChildSize: 0.9,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
@@ -46,14 +46,14 @@ class _CariDokterPageState extends State<CariDokterPage> {
                 ),
                 child: ListView.builder(
                   controller: scrollController,
-                  itemCount: 1,
+                  itemCount: 20,
                   itemBuilder: (BuildContext context, int index) {
                     return Column(
                       children: [
                         SizedBox(height: 8),
                         Center(
                           child: Container(
-                            width: 30,
+                            width: 100,
                             height: 5,
                             decoration: BoxDecoration(
                               color: Colors.grey[300],
@@ -62,34 +62,97 @@ class _CariDokterPageState extends State<CariDokterPage> {
                           ),
                         ),
                         SizedBox(height: 16),
-                        // Your header and content here
                         Text(
-                          'Header', // Replace with your header content
-                          style: lightTextStyle.copyWith(fontSize: 18),
+                          'Cari Dokter',
+                          style: TextStyle(
+                              color: lightColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22),
                         ),
-                        Divider(),
-                        // Your list content here
-                        ...List.generate(20, (index) => ListTile(
-                          title: Text('Dr. Ahmad Taufik',
-                              style: lightTextStyle.copyWith(fontWeight: FontWeight.bold)),
-                          subtitle: Text(
-                            'Dokter Kandungan',
-                            style: TextStyle(fontSize: 12, color: Colors.amber),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 15),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Cari apa yang kamu butuhkan....',
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: khakiColor,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: alertColor,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(Icons.search, color: lightColor),
+                                  onPressed: () {},
+                                ),
+                              ),
+                            ],
                           ),
-                          trailing: Text(
-                            '2.1 KM',
-                            style: lightTextStyle.copyWith(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Dokter Teratas',
+                                style: TextStyle(
+                                    color: lightColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  'Lihat Semuanya',
+                                  style: TextStyle(color: lightColor),
+                                ),
+                              ),
+                            ],
                           ),
-                          leading: CircleAvatar(
-                            child: Icon(Icons.person),
-                          ),
-                        )),
+                        ),
+                        ...List.generate(
+                            20,
+                            (index) => ListTile(
+                                  title: Text('Dr. Ahmad Taufik',
+                                      style: lightTextStyle.copyWith(
+                                          fontWeight: FontWeight.bold)),
+                                  subtitle: Text(
+                                    'Dokter Kandungan',
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.amber),
+                                  ),
+                                  trailing: Text(
+                                    '2.1 KM',
+                                    style: lightTextStyle.copyWith(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  leading: CircleAvatar(
+                                    child: Icon(Icons.person),
+                                  ),
+                                )),
                       ],
                     );
                   },
-                );
-
+                ),
+              );
+            },
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
