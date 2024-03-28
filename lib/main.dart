@@ -3,6 +3,9 @@ import 'package:digisehat/pages/sign_in.dart';
 import 'package:digisehat/pages/sign_up.dart';
 import 'package:digisehat/pages/forgot_password.dart';
 import 'package:digisehat/pages/splash.dart';
+import 'package:digisehat/pages/home/home.dart';
+import 'package:digisehat/pages/home/profile.dart';
+import 'package:digisehat/pages/home/cari_dokter.dart';
 // import 'theme.dart';
 
 void main() {
@@ -17,11 +20,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => ForgotPasswordPage(),
+        // untuk debug :
+        '/': (context) => HomePage(),
+
         // '/': (context) => SplashPage(),
         '/sign-in': (context) => SignInPage(),
         '/forgot-password': (context) => ForgotPasswordPage(),
-        '/sign-up': (context) => SignUpPage()
+        '/sign-up': (context) => SignUpPage(),
+        '/profile': (context) => ProfilePage(),
+        '/cari-dokter': (context) => CariDokterPage(),
       },
     );
   }

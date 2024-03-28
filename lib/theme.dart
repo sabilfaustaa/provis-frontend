@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 double defaultMargin = 40.0;
+double defaultMarginHome = 18.0;
 
 const Color primaryColor = Color(0xff278EA5);
 const Color lightColor = Color(0xffF0F0F0);
@@ -32,8 +33,31 @@ BoxDecoration gradientAuthBoxDecoration = BoxDecoration(
   ),
 );
 
+BoxDecoration gradientHomeBoxDecoration = BoxDecoration(
+  gradient: LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      darkPrimaryColor,
+      darkPrimaryColor,
+      darkPrimaryColor,
+    ],
+  ),
+  image: DecorationImage(
+    image: AssetImage("assets/background-auth.png"),
+    fit: BoxFit.cover,
+    colorFilter: ColorFilter.mode(
+      Colors.black.withOpacity(0.05),
+      BlendMode.dstATop,
+    ),
+  ),
+);
+
 TextStyle primaryTextStyle = GoogleFonts.montserrat(
   color: primaryColor,
+);
+TextStyle alertTextStyle = GoogleFonts.montserrat(
+  color: alertColor,
 );
 TextStyle darkPrimaryTextStyle = GoogleFonts.montserrat(
   color: darkPrimaryColor,

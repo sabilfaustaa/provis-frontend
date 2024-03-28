@@ -17,7 +17,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return Scaffold(
       body: Stack(
         children: [
-          buildBackground(),
+          buildBackground(gradientAuthBoxDecoration),
           Center(
             child: SingleChildScrollView(
               child: Container(

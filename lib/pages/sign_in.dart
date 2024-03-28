@@ -9,7 +9,7 @@ class SignInPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          buildBackground(),
+          buildBackground(gradientAuthBoxDecoration),
           _buildLoginCard(context),
         ],
       ),

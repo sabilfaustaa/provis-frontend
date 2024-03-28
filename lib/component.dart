@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:digisehat/theme.dart';
 
-Widget buildBackground() {
+Widget buildBackground(BoxDecoration boxDecoration) {
   return Container(
-    decoration: gradientAuthBoxDecoration,
+    decoration: boxDecoration,
   );
 }
 

@@ -17,7 +17,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       body: Stack(
         children: [
-          buildBackground(),
+          buildBackground(gradientAuthBoxDecoration),
           Center(
             child: SingleChildScrollView(
               child: Container(

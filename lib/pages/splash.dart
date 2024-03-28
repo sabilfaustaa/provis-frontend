@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:digisehat/theme.dart';
+import 'package:digisehat/helpers.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -11,8 +12,7 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    Timer(
-        Duration(seconds: 3), () => {Navigator.pushNamed(context, '/sign-in')});
+    Timer(Duration(seconds: 3), () => {redirectTo(context, '/sign-in')});
     super.initState();
   }
 
@@ -21,14 +21,14 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: Stack(
         children: [
-          _buildBackground(),
+          _buildBackground(gradientAuthBoxDecoration),
           _buildHeader(),
         ],
       ),
     );
   }
 
-  Widget _buildBackground() {
+  Widget _buildBackground(gradientAuthBoxDecoration) {
     return Container(
       decoration: gradientAuthBoxDecoration,
     );
