@@ -15,6 +15,9 @@ import 'package:digisehat/pages/home/home.dart';
 import 'package:digisehat/pages/home/profile.dart';
 import 'package:digisehat/pages/home/cari_dokter.dart';
 import 'package:digisehat/pages/home/detail_dokter.dart';
+import 'package:digisehat/pages/home/panduan_aplikasi.dart';
+import 'package:digisehat/pages/home/panduan_obat.dart';
+import 'package:digisehat/pages/home/panduan_fitur.dart';
 // import 'theme.dart';
 
 void main() {
@@ -50,8 +53,12 @@ class MyApp extends StatelessWidget {
         '/riwayat-transaksi': (context) => RiwayatTransaksiPage(), // done
         '/riwayat-konsultasi': (context) => RiwayatKonsultasiPage(), // done
 
-        '/notifikasi': (context) => NotifikasiPage(),
+        '/panduan-aplikasi': (context) => PanduanAplikasiPage(),
+        '/panduan-obat': (context) => PanduanObatPage(),
+        '/panduan-fitur': (context) => PanduanFiturPage(),
+
         '/obat-pasien': (context) => ObatPasienPage(),
+        '/notifikasi': (context) => NotifikasiPage(),
       },
     );
   }
