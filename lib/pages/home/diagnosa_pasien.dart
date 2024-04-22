@@ -98,7 +98,7 @@ class DiagnosaPasienPage extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                color: primaryColor, // Color for the title bar
+                                color: primaryColor,
                                 padding: EdgeInsets.all(
                                   16.0,
                                 ),
@@ -119,6 +119,9 @@ class DiagnosaPasienPage extends StatelessWidget {
                         ),
                         SizedBox(height: 16),
                         InputDiagnosaPasien(),
+                        InputDaftarDiagnosaPasien(),
+                        InputDaftarObat(),
+                        InputRekomendasiTindakan(),
                       ],
                     ),
                   ),
@@ -274,7 +277,6 @@ class InputDiagnosaPasien extends StatefulWidget {
 }
 
 class _InputDiagnosaPasienState extends State<InputDiagnosaPasien> {
-  // State variables to hold the text input
   String gejalaUmum = '';
   String gejalaKhusus = '';
   String gejalaTambahan = '';
@@ -282,9 +284,11 @@ class _InputDiagnosaPasienState extends State<InputDiagnosaPasien> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.symmetric(vertical: 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       color: primaryColor,
       child: ExpansionTile(
+        initiallyExpanded: true,
         leading: Icon(Icons.health_and_safety, color: lightColor),
         title: Container(
           color: primaryColor,
@@ -299,20 +303,15 @@ class _InputDiagnosaPasienState extends State<InputDiagnosaPasien> {
                   title:
                       Text('Gejala Umum', style: TextStyle(color: lightColor)),
                   subtitle: TextField(
-                    style: TextStyle(color: lightColor), // Warna teks input
+                    style: TextStyle(color: lightColor),
                     decoration: InputDecoration(
                       hintText: 'Mata merah, nyeri mata, penglihatan kabur',
-                      hintStyle: TextStyle(
-                          color:
-                              lightColor.withOpacity(0.7)), // Warna placeholder
+                      hintStyle: TextStyle(color: lightColor.withOpacity(0.7)),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color:
-                                lightColor), // Warna garis bawah saat tidak aktif
+                        borderSide: BorderSide(color: lightColor),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: lightColor), // Warna garis bawah saat fokus
+                        borderSide: BorderSide(color: lightColor),
                       ),
                     ),
                     onChanged: (value) {
@@ -326,21 +325,16 @@ class _InputDiagnosaPasienState extends State<InputDiagnosaPasien> {
                   title: Text('Gejala Khusus',
                       style: TextStyle(color: lightColor)),
                   subtitle: TextField(
-                    style: TextStyle(color: lightColor), // Warna teks input
+                    style: TextStyle(color: lightColor),
                     decoration: InputDecoration(
                       hintText:
                           'Sensasi terbakar, perasaan berpasir di mata, kelopak mata bengkak',
-                      hintStyle: TextStyle(
-                          color:
-                              lightColor.withOpacity(0.7)), // Warna placeholder
+                      hintStyle: TextStyle(color: lightColor.withOpacity(0.7)),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color:
-                                lightColor), // Warna garis bawah saat tidak aktif
+                        borderSide: BorderSide(color: lightColor),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: lightColor), // Warna garis bawah saat fokus
+                        borderSide: BorderSide(color: lightColor),
                       ),
                     ),
                     onChanged: (value) {
@@ -354,21 +348,16 @@ class _InputDiagnosaPasienState extends State<InputDiagnosaPasien> {
                   title: Text('Gejala Tambahan',
                       style: TextStyle(color: lightColor)),
                   subtitle: TextField(
-                    style: TextStyle(color: lightColor), // Warna teks input
+                    style: TextStyle(color: lightColor),
                     decoration: InputDecoration(
                       hintText:
                           'Pengeluaran lendir atau nanah, fotofobia (sensitivitas terhadap cahaya)',
-                      hintStyle: TextStyle(
-                          color:
-                              lightColor.withOpacity(0.7)), // Warna placeholder
+                      hintStyle: TextStyle(color: lightColor.withOpacity(0.7)),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color:
-                                lightColor), // Warna garis bawah saat tidak aktif
+                        borderSide: BorderSide(color: lightColor),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: lightColor), // Warna garis bawah saat fokus
+                        borderSide: BorderSide(color: lightColor),
                       ),
                     ),
                     onChanged: (value) {
@@ -382,6 +371,236 @@ class _InputDiagnosaPasienState extends State<InputDiagnosaPasien> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class InputDaftarDiagnosaPasien extends StatefulWidget {
+  @override
+  _InputDaftarDiagnosaPasienState createState() =>
+      _InputDaftarDiagnosaPasienState();
+}
+
+class _InputDaftarDiagnosaPasienState extends State<InputDaftarDiagnosaPasien> {
+  String penjelasan = '';
+  String penyebab = '';
+  String gejalaTambahan = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      color: primaryColor,
+      child: ExpansionTile(
+        initiallyExpanded: false,
+        leading: Icon(Icons.health_and_safety, color: lightColor),
+        title: Container(
+          color: primaryColor,
+          child: Text('Daftar Diagnosa', style: TextStyle(color: lightColor)),
+        ),
+        children: <Widget>[
+          Container(
+            color: inputColor,
+            child: Column(
+              children: [
+                ListTile(
+                  title:
+                      Text('Penjelasan', style: TextStyle(color: lightColor)),
+                  subtitle: TextField(
+                    style: TextStyle(color: lightColor),
+                    decoration: InputDecoration(
+                      hintText:
+                          'Ketidakmampuan membersihkan sekret atau obstruksi jalan nafas untuk mempertahankan jalan nafas tetap paten.',
+                      hintStyle: TextStyle(color: lightColor.withOpacity(0.7)),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: lightColor),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: lightColor),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        penjelasan = value;
+                      });
+                    },
+                  ),
+                ),
+                ListTile(
+                  title: Text('Penyebab', style: TextStyle(color: lightColor)),
+                  subtitle: TextField(
+                    style: TextStyle(color: lightColor),
+                    decoration: InputDecoration(
+                      hintText:
+                          'Spasme jalan napas, Hipersekresi jalan napas, Disfungsi neuromuskuler.',
+                      hintStyle: TextStyle(color: lightColor.withOpacity(0.7)),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: lightColor),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: lightColor),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        penyebab = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class InputDaftarObat extends StatefulWidget {
+  @override
+  _InputDaftarObatState createState() => _InputDaftarObatState();
+}
+
+class _InputDaftarObatState extends State<InputDaftarObat> {
+  String antibiotik = '';
+  String antiinflamasi = '';
+  String pelembabMata = '';
+  String analgesik = '';
+  String vitaminMineral = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      color: primaryColor,
+      child: ExpansionTile(
+        initiallyExpanded: false,
+        leading: Icon(Icons.list, color: lightColor),
+        title: Text('Daftar Obat', style: TextStyle(color: lightColor)),
+        children: <Widget>[
+          Container(
+              color: inputColor,
+              child: Column(children: [
+                _buildListItem(
+                    'Antibiotik',
+                    'Tetes mata antibiotik, salep antibiotik',
+                    antibiotik,
+                    (value) => setState(() => antibiotik = value)),
+                _buildListItem(
+                    'Antiinflamasi',
+                    'Tetes mata antiinflamasi, steroid mata',
+                    antiinflamasi,
+                    (value) => setState(() => antiinflamasi = value)),
+                _buildListItem(
+                    'Pelembab Mata',
+                    'Tetes mata pelembab, salep pelembab',
+                    pelembabMata,
+                    (value) => setState(() => pelembabMata = value)),
+                _buildListItem(
+                    'Analgesik',
+                    'Obat penghilang nyeri, kompres mata hangat',
+                    analgesik,
+                    (value) => setState(() => analgesik = value)),
+                _buildListItem(
+                    'Vitamin dan Mineral',
+                    'Suplemen vitamin A, omega-3',
+                    vitaminMineral,
+                    (value) => setState(() => vitaminMineral = value)),
+              ]))
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListItem(
+      String title, String hintText, String value, Function(String) onChanged) {
+    return ListTile(
+      title: Text(title, style: TextStyle(color: lightColor)),
+      subtitle: TextField(
+        controller: TextEditingController(text: value),
+        style: TextStyle(color: lightColor),
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(color: lightColor.withOpacity(0.7)),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: lightColor),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: lightColor),
+          ),
+        ),
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+
+class InputRekomendasiTindakan extends StatefulWidget {
+  @override
+  _InputRekomendasiTindakanState createState() =>
+      _InputRekomendasiTindakanState();
+}
+
+class _InputRekomendasiTindakanState extends State<InputRekomendasiTindakan> {
+  String pengobatan = '';
+  String terapi = '';
+  String pencegahan = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      color: primaryColor,
+      child: ExpansionTile(
+        initiallyExpanded: false,
+        leading: Icon(Icons.list, color: lightColor),
+        title:
+            Text('Rekomendasi Tindakan', style: TextStyle(color: lightColor)),
+        children: <Widget>[
+          Container(
+              color: inputColor,
+              child: Column(children: [
+                _buildListItem(
+                    'Pengobatan',
+                    'Penggunaan obat sesuai resep dokter',
+                    pengobatan,
+                    (value) => setState(() => pengobatan = value)),
+                _buildListItem('Terapi', 'Terapi fisik, terapi kacamata',
+                    terapi, (value) => setState(() => terapi = value)),
+                _buildListItem(
+                    'Pencegahan',
+                    'Menjaga kebersihan mata, menghindari penggunaan lensa kontak yang lama',
+                    pencegahan,
+                    (value) => setState(() => pencegahan = value)),
+              ]))
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListItem(
+      String title, String hintText, String value, Function(String) onChanged) {
+    return ListTile(
+      title: Text(title, style: TextStyle(color: lightColor)),
+      subtitle: TextField(
+        controller: TextEditingController(text: value),
+        style: TextStyle(color: lightColor),
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(color: lightColor.withOpacity(0.7)),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: lightColor),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: lightColor),
+          ),
+        ),
+        onChanged: onChanged,
       ),
     );
   }

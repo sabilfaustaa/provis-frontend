@@ -98,7 +98,7 @@ class ObatPasienPage extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                color: primaryColor, // Color for the title bar
+                                color: primaryColor,
                                 padding: EdgeInsets.all(
                                   16.0,
                                 ),
