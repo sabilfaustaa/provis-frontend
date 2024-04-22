@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         // untuk debug :
-        '/': (context) => DiagnosaPasienPage(),
+        '/': (context) => HomePage(),
 
         // '/': (context) => SplashPage(),
         '/home': (context) => HomePage(), // fiksasi konten
@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
         '/detail-dokter': (context) => DetailDokterPage(), // fiksasi konten
         '/jadwal-konsultasi': (context) =>
             JadwalKonsultasiPage(), // fiksasi konten
+        '/diagnosa-pasien': (context) => DiagnosaPasienPage(), // done
 
-        '/diagnosa-pasien': (context) => DiagnosaPasienPage(),
         '/obat-pasien': (context) => ObatPasienPage(),
         '/notifikasi': (context) => NotifikasiPage(),
         '/riwayat-konsultasi': (context) => RiwayatKonsultasiPage(),
