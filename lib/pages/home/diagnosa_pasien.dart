@@ -93,7 +93,7 @@ class DiagnosaPasienPage extends StatelessWidget {
                         Card(
                           clipBehavior: Clip.antiAlias,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(1.0),
                           ),
                           child: Column(
                             children: <Widget>[
@@ -118,7 +118,7 @@ class DiagnosaPasienPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 16),
-                        _buildInfoCard()
+                        InputDiagnosaPasien(),
                       ],
                     ),
                   ),
@@ -127,21 +127,6 @@ class DiagnosaPasienPage extends StatelessWidget {
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget _buildInfoCard() {
-    return Card(
-      color: priceColor,
-      margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
-      child: ExpansionTile(
-        backgroundColor: primaryColor,
-        title: Text(
-          "Input Diagnosa Pasien",
-          style: lightTextStyle,
-        ),
-        children: [Text("test")],
       ),
     );
   }
@@ -275,6 +260,125 @@ class DokterCard extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class InputDiagnosaPasien extends StatefulWidget {
+  @override
+  _InputDiagnosaPasienState createState() => _InputDiagnosaPasienState();
+}
+
+class _InputDiagnosaPasienState extends State<InputDiagnosaPasien> {
+  // State variables to hold the text input
+  String gejalaUmum = '';
+  String gejalaKhusus = '';
+  String gejalaTambahan = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      color: primaryColor,
+      child: ExpansionTile(
+        leading: Icon(Icons.health_and_safety, color: lightColor),
+        title: Container(
+          color: primaryColor,
+          child: Text('Gejala Pasien', style: TextStyle(color: lightColor)),
+        ),
+        children: <Widget>[
+          Container(
+            color: inputColor,
+            child: Column(
+              children: [
+                ListTile(
+                  title:
+                      Text('Gejala Umum', style: TextStyle(color: lightColor)),
+                  subtitle: TextField(
+                    style: TextStyle(color: lightColor), // Warna teks input
+                    decoration: InputDecoration(
+                      hintText: 'Mata merah, nyeri mata, penglihatan kabur',
+                      hintStyle: TextStyle(
+                          color:
+                              lightColor.withOpacity(0.7)), // Warna placeholder
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color:
+                                lightColor), // Warna garis bawah saat tidak aktif
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: lightColor), // Warna garis bawah saat fokus
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        gejalaUmum = value;
+                      });
+                    },
+                  ),
+                ),
+                ListTile(
+                  title: Text('Gejala Khusus',
+                      style: TextStyle(color: lightColor)),
+                  subtitle: TextField(
+                    style: TextStyle(color: lightColor), // Warna teks input
+                    decoration: InputDecoration(
+                      hintText:
+                          'Sensasi terbakar, perasaan berpasir di mata, kelopak mata bengkak',
+                      hintStyle: TextStyle(
+                          color:
+                              lightColor.withOpacity(0.7)), // Warna placeholder
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color:
+                                lightColor), // Warna garis bawah saat tidak aktif
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: lightColor), // Warna garis bawah saat fokus
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        gejalaKhusus = value;
+                      });
+                    },
+                  ),
+                ),
+                ListTile(
+                  title: Text('Gejala Tambahan',
+                      style: TextStyle(color: lightColor)),
+                  subtitle: TextField(
+                    style: TextStyle(color: lightColor), // Warna teks input
+                    decoration: InputDecoration(
+                      hintText:
+                          'Pengeluaran lendir atau nanah, fotofobia (sensitivitas terhadap cahaya)',
+                      hintStyle: TextStyle(
+                          color:
+                              lightColor.withOpacity(0.7)), // Warna placeholder
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color:
+                                lightColor), // Warna garis bawah saat tidak aktif
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: lightColor), // Warna garis bawah saat fokus
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        gejalaTambahan = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],

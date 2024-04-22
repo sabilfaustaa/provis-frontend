@@ -90,7 +90,6 @@ class JadwalKonsultasiPage extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        // Card for Queue Number
                         Card(
                           clipBehavior: Clip.antiAlias,
                           shape: RoundedRectangleBorder(
@@ -99,7 +98,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                color: primaryColor, // Color for the title bar
+                                color: primaryColor,
                                 padding: EdgeInsets.all(16.0),
                                 child: Row(
                                   children: <Widget>[
@@ -113,7 +112,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                               ),
                               Container(
                                 width: double.infinity,
-                                color: inputColor, // Color for the content area
+                                color: inputColor,
                                 padding: EdgeInsets.symmetric(
                                     vertical: 20.0, horizontal: 20),
                                 child: Center(
@@ -129,8 +128,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 16), // Spacing between cards
-                        // Card for Time and Place
+                        SizedBox(height: 16),
                         Card(
                           clipBehavior: Clip.antiAlias,
                           shape: RoundedRectangleBorder(
@@ -139,7 +137,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                color: primaryColor, // Color for the title bar
+                                color: primaryColor,
                                 padding: EdgeInsets.all(
                                   16.0,
                                 ),
@@ -155,7 +153,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                               ),
                               Container(
                                 width: double.infinity,
-                                color: inputColor, // Color for the content area
+                                color: inputColor,
                                 padding: EdgeInsets.all(32.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,8 +176,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 16), // Spacing between cards
-                        // Card for Time and Place
+                        SizedBox(height: 16),
                         Card(
                           clipBehavior: Clip.antiAlias,
                           shape: RoundedRectangleBorder(
@@ -188,7 +185,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                color: primaryColor, // Color for the title bar
+                                color: primaryColor,
                                 padding: EdgeInsets.all(
                                   16.0,
                                 ),
@@ -204,32 +201,28 @@ class JadwalKonsultasiPage extends StatelessWidget {
                               ),
                               Container(
                                 width: double.infinity,
-                                height: 240, // Adjust the height as needed
+                                height: 240,
                                 decoration: BoxDecoration(
                                   color: inputColor,
                                   image: DecorationImage(
                                     fit: BoxFit.contain,
-                                    image: AssetImage(
-                                        'assets/ijay.png'), // Replace with your image asset
+                                    image: AssetImage('assets/ijay.png'),
                                   ),
                                 ),
                                 child: Stack(
                                   children: [
-                                    // Gradient overlay (optional)
                                     Container(
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           begin: Alignment.bottomCenter,
                                           end: Alignment.center,
                                           colors: [
-                                            Colors.black12!.withOpacity(
-                                                0.8), // Adjust the opacity as needed
+                                            Colors.black12!.withOpacity(0.8),
                                             Colors.transparent,
                                           ],
                                         ),
                                       ),
                                     ),
-                                    // Doctor information text
                                     Positioned(
                                       left: 16,
                                       bottom: 16,
@@ -281,8 +274,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 16), // Spacing between cards
-                        // Card for Time and Place
+                        SizedBox(height: 16),
                         Card(
                           clipBehavior: Clip.antiAlias,
                           shape: RoundedRectangleBorder(
@@ -291,7 +283,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                color: primaryColor, // Color for the title bar
+                                color: primaryColor,
                                 padding: EdgeInsets.all(
                                   16.0,
                                 ),
@@ -307,13 +299,12 @@ class JadwalKonsultasiPage extends StatelessWidget {
                               Container(
                                 padding: EdgeInsets.symmetric(vertical: 20),
                                 width: double.infinity,
-                                height: 240, // Adjust the height as needed
+                                height: 240,
                                 decoration: BoxDecoration(
                                   color: inputColor,
                                   image: DecorationImage(
                                     fit: BoxFit.contain,
-                                    image: AssetImage(
-                                        'assets/barcode.png'), // Replace with your image asset
+                                    image: AssetImage('assets/barcode.png'),
                                   ),
                                 ),
                               )

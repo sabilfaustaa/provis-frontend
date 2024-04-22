@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         // untuk debug :
-        '/': (context) => DetailDokterPage(),
+        '/': (context) => DiagnosaPasienPage(),
 
         // '/': (context) => SplashPage(),
         '/home': (context) => HomePage(), // fiksasi konten

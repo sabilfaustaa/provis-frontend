@@ -23,15 +23,14 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
       body: Stack(
         children: [
           Positioned(
-            top: 0, // Sesuaikan dengan posisi yang diinginkan
-            left: 0, // Sesuaikan dengan posisi yang diinginkan
+            top: 0,
+            left: 0,
             child: SafeArea(
               child: FloatingActionButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: Icon(Icons.arrow_back, color: Colors.white),
-                backgroundColor:
-                    Colors.blue, // Sesuaikan dengan warna yang diinginkan
-                mini: true, // Atur ke 'true' untuk ukuran FAB yang lebih kecil
+                backgroundColor: Colors.blue,
+                mini: true,
               ),
             ),
           ),
@@ -135,7 +134,7 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
                   style: lightTextStyle.copyWith(fontWeight: bold),
                 ),
                 icon: Icon(Icons.chat, color: lightColor),
-                backgroundColor: orangeColor, // Change to desired color
+                backgroundColor: orangeColor,
               ),
             ),
           ),
@@ -168,7 +167,7 @@ class HeaderCard extends StatelessWidget {
                   bottomLeft: Radius.circular(10.0),
                 ),
                 image: DecorationImage(
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                   image: NetworkImage('assets/hanif.png'),
                 ),
               ),
@@ -624,8 +623,7 @@ class DokterSuggestion extends StatelessWidget {
       'experience': '27 Tahun',
       'rating': 5,
       'reviews': 325,
-      'image':
-          'assets/ijay.png', // Harus diganti dengan path gambar yang sesuai
+      'image': 'assets/ijay.png',
     },
     {
       'name': 'Dr. Ahmad Taufik',
@@ -633,16 +631,14 @@ class DokterSuggestion extends StatelessWidget {
       'experience': '12 Tahun',
       'rating': 4,
       'reviews': 152,
-      'image':
-          'assets/hanif.png', // Harus diganti dengan path gambar yang sesuai
+      'image': 'assets/hanif.png',
     },
-    // Tambahkan lebih banyak dokter sesuai kebutuhan
   ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 230, // Set a fixed height for the container
+      height: 230,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -661,7 +657,7 @@ class DokterSuggestion extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 var dokter = dokters[index];
                 return Container(
-                  width: 320, // Width of each card
+                  width: 320,
                   padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Card(
                     color: inputColor,
@@ -671,8 +667,8 @@ class DokterSuggestion extends StatelessWidget {
                         Image.asset(
                           dokter['image'],
                           fit: BoxFit.cover,
-                          width: 120, // Fixed width for image
-                          height: 180, // Fixed height to match card's height
+                          width: 120,
+                          height: 180,
                         ),
                         Expanded(
                           child: Padding(
