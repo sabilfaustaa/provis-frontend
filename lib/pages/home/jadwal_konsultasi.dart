@@ -311,6 +311,44 @@ class JadwalKonsultasiPage extends StatelessWidget {
                             ],
                           ),
                         ),
+                        SizedBox(height: 16),
+                        Card(
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                color: primaryColor,
+                                padding: EdgeInsets.all(
+                                  16.0,
+                                ),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(Icons.chat_rounded,
+                                        color: Colors.white),
+                                    SizedBox(width: 8.0),
+                                    Text('Konsultasikan Sekarang',
+                                        style: TextStyle(color: Colors.white)),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 20),
+                                width: double.infinity,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  color: inputColor,
+                                ),
+                                child: buildButton(context,
+                                    "Mulai chat dengan Dr. Ahmad Hanif", () {
+                                  redirectTo(context, "/pesan");
+                                }, orangeColor, lightColor),
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),

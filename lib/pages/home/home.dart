@@ -121,14 +121,20 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(width: 6),
             DropdownButton(
-              items: const [
+              items: [
                 DropdownMenuItem(
                   value: "profile",
                   child: Text("Profil"),
+                  onTap: () {
+                    redirectTo(context, "/profile");
+                  },
                 ),
                 DropdownMenuItem(
                   value: "change_password",
                   child: Text("Ubah Password"),
+                  onTap: () {
+                    redirectTo(context, "/ubah-password");
+                  },
                 ),
               ],
               onChanged: (value) {},

@@ -32,16 +32,15 @@ class MyApp extends StatelessWidget {
         '/': (context) => HomePage(),
 
         // '/': (context) => SplashPage(),
-        '/home': (context) => HomePage(), // fiksasi konten
+        '/home': (context) => HomePage(), // done
         '/sign-in': (context) => SignInPage(), // done
         '/forgot-password': (context) => ForgotPasswordPage(), // done
         '/sign-up': (context) => SignUpPage(), // done
 
-        '/profile': (context) => ProfilePage(), // fiksasi konten
-        '/cari-dokter': (context) => CariDokterPage(), // fiksasi konten
-        '/detail-dokter': (context) => DetailDokterPage(), // fiksasi konten
-        '/jadwal-konsultasi': (context) =>
-            JadwalKonsultasiPage(), // fiksasi konten
+        '/profile': (context) => ProfilePage(), // done
+        '/cari-dokter': (context) => CariDokterPage(), // done
+        '/detail-dokter': (context) => DetailDokterPage(), // done
+        '/jadwal-konsultasi': (context) => JadwalKonsultasiPage(), // done
         '/diagnosa-pasien': (context) => DiagnosaPasienPage(), // done
 
         '/obat-pasien': (context) => ObatPasienPage(),

@@ -83,7 +83,7 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
+                                'Pendidikan dan Pengalaman : Dr. Ahmad Hanif adalah seorang dokter mata yang berpengalaman dan berkualifikasi tinggi. Dia lulus dengan predikat cum laude dari salah satu universitas terkemuka di negaranya dan kemudian menyelesaikan residensi serta fellowship dalam bidang oftalmologi di rumah sakit terkemuka di dalam dan luar negeri. Selama karirnya, Dr. Hanif telah bekerja dengan berbagai kasus yang berkaitan dengan mata, mulai dari masalah refraksi hingga prosedur bedah kompleks.',
                                 style: TextStyle(
                                   color: lightColor.withOpacity(0.7),
                                   fontSize: 14,
@@ -128,7 +128,9 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
             child: Padding(
               padding: EdgeInsets.all(16),
               child: FloatingActionButton.extended(
-                onPressed: () {},
+                onPressed: () {
+                  redirectTo(context, "/jadwal-konsultasi");
+                },
                 label: Text(
                   'Konsultasi Sekarang',
                   style: lightTextStyle.copyWith(fontWeight: bold),
@@ -383,6 +385,7 @@ class _JadwalDokterState extends State<JadwalDokter> {
           ),
         ),
         Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
           height: 100,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -493,17 +496,17 @@ class _JadwalDokterSelectorState extends State<JadwalDokterSelector> {
 class ReviewPasien extends StatelessWidget {
   final List<Map<String, dynamic>> reviews = [
     {
-      'name': 'Ahmad Themy',
+      'name': 'Sarah Wijaya',
       'time': '2 hari lalu',
       'review':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
+          'Dr. Hanif sangat sabar dan teliti dalam menjelaskan kondisi mata saya. Saya merasa sangat dipahami dan yakin dengan perawatan yang direkomendasikannya.',
       'rating': 4.0,
     },
     {
-      'name': 'Sabil Faust',
-      'time': '5 hari lalu',
+      'name': 'Budi Santoso',
+      'time': '8 hari lalu',
       'review':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
+          'Pelayanan dari Dr. Hanif sangat baik, namun saya berharap waktu tunggu bisa lebih singkat. Tetapi secara keseluruhan, saya puas dengan kualitas perawatannya.',
       'rating': 4.0,
     },
   ];

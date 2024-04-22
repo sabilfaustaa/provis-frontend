@@ -22,15 +22,51 @@ class _CariDokterPageState extends State<CariDokterPage> {
       body: Stack(
         children: [
           Container(
-            color: primaryColor,
-            child: Center(
-              child: Text('Peta Akan Ditampilkan Di Sini',
-                  style: TextStyle(fontSize: 24, color: Colors.white)),
+            decoration: BoxDecoration(
+              color: primaryColor,
+              image: DecorationImage(
+                image: AssetImage('assets/cari_dokter_image.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.arrow_back, color: lightColor),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        Text(
+                          'Cari Dokter',
+                          style: lightTextStyle.copyWith(
+                              fontSize: 20.0, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(),
+                      ],
+                    ),
+                  ),
+                  Image.network(
+                    "assets/dokter.png",
+                    width: double.infinity,
+                    fit: BoxFit.contain,
+                  )
+                ],
+              ),
             ),
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.70,
-            minChildSize: 0.70,
+            initialChildSize: 0.60,
+            minChildSize: 0.60,
             maxChildSize: 0.9,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
@@ -60,12 +96,19 @@ class _CariDokterPageState extends State<CariDokterPage> {
                         ),
                       ),
                       SizedBox(height: 16),
-                      Text(
-                        'Cari Dokter',
-                        style: TextStyle(
-                            color: lightColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              'Cari Dokter',
+                              style: TextStyle(
+                                  color: lightColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22),
+                            ),
+                          )
+                        ],
                       ),
                       Padding(
                         padding:
@@ -124,7 +167,7 @@ class _CariDokterPageState extends State<CariDokterPage> {
                         ),
                       ),
                       ...List.generate(
-                          20,
+                          10,
                           (index) => InkWell(
                                 onTap: () {
                                   redirectTo(context, "/detail-dokter");
@@ -149,6 +192,9 @@ class _CariDokterPageState extends State<CariDokterPage> {
                                   ),
                                 ),
                               )),
+                      SizedBox(
+                        height: 20,
+                      )
                     ],
                   ),
                 ),
@@ -157,15 +203,28 @@ class _CariDokterPageState extends State<CariDokterPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(
-          Icons.warning,
-          size: 28,
-        ),
-        backgroundColor: alertColor,
-        elevation: 2.0,
-        shape: CircleBorder(),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          FloatingActionButton(
+            onPressed: () {},
+            child: Icon(
+              Icons.warning,
+              size: 28,
+            ),
+            backgroundColor: alertColor,
+            elevation: 2.0,
+            shape: CircleBorder(),
+          ),
+          SizedBox(height: 4),
+          Text(
+            'Gawat Darurat',
+            style: lightTextStyle.copyWith(fontSize: 12),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomNavigationBar(
