@@ -1,9 +1,24 @@
+import 'package:digisehat/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:digisehat/theme.dart';
 import 'package:digisehat/component.dart';
 import 'package:digisehat/helpers.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  int _selectedIndex = 0;
+  void _selectTab(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,6 +85,36 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
         ],
+      ),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          FloatingActionButton(
+            onPressed: () {},
+            child: Icon(
+              Icons.warning,
+              size: 28,
+            ),
+            backgroundColor: alertColor,
+            elevation: 2.0,
+            shape: CircleBorder(),
+          ),
+          SizedBox(height: 4),
+          Text(
+            'Gawat Darurat',
+            style: lightTextStyle.copyWith(fontSize: 12),
+          ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: CustomBottomNavigationBar(
+        selectedIndex: _selectedIndex,
+        onItemSelected: (index) {
+          _selectTab(index);
+        },
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:digisehat/pages/home/diagnosa_pasien.dart';
+import 'package:digisehat/pages/home/input_diagnosa_paien.dart';
 import 'package:digisehat/pages/home/jadwal_konsultasi.dart';
 import 'package:digisehat/pages/home/notifikasi.dart';
 import 'package:digisehat/pages/home/obat_pasien.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         // untuk debug :
-        '/': (context) => HomePage(),
+        '/': (context) => RiwayatKonsultasiPage(),
 
         // '/': (context) => SplashPage(),
         '/home': (context) => HomePage(), // done
@@ -41,13 +42,16 @@ class MyApp extends StatelessWidget {
         '/cari-dokter': (context) => CariDokterPage(), // done
         '/detail-dokter': (context) => DetailDokterPage(), // done
         '/jadwal-konsultasi': (context) => JadwalKonsultasiPage(), // done
+        '/list-pesan': (context) => PesanPage(),
+        '/pesan': (context) => PesanPage(), // done
+        '/input-diagnosa-pasien': (context) =>
+            InputDiagnosaPasienPage(), // done
         '/diagnosa-pasien': (context) => DiagnosaPasienPage(), // done
+        '/riwayat-transaksi': (context) => RiwayatTransaksiPage(), // done
+        '/riwayat-konsultasi': (context) => RiwayatKonsultasiPage(), // done
 
-        '/obat-pasien': (context) => ObatPasienPage(),
         '/notifikasi': (context) => NotifikasiPage(),
-        '/riwayat-konsultasi': (context) => RiwayatKonsultasiPage(),
-        '/riwayat-transaksi': (context) => RiwayatTransaksiPage(),
-        '/pesan': (context) => PesanPage(),
+        '/obat-pasien': (context) => ObatPasienPage(),
       },
     );
   }

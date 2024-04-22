@@ -69,13 +69,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
       onTap: () {
         switch (index) {
           case 0:
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamed(context, '/home');
             break;
           case 1:
             Navigator.pushNamed(context, '/pesan');
             break;
           case 2:
-            Navigator.pushNamed(context, '/list');
+            Navigator.pushNamed(context, '/riwayat-transaksi');
             break;
           case 3:
             Navigator.pushNamed(context, '/profile');
