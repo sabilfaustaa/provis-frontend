@@ -44,90 +44,92 @@ class _CariDokterPageState extends State<CariDokterPage> {
                     ),
                   ],
                 ),
-                child: ListView.builder(
+                child: SingleChildScrollView(
                   controller: scrollController,
-                  itemCount: 20,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        SizedBox(height: 8),
-                        Center(
-                          child: Container(
-                            width: 100,
-                            height: 5,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(2.5),
-                            ),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 8),
+                      Center(
+                        child: Container(
+                          width: 100,
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(2.5),
                           ),
                         ),
-                        SizedBox(height: 16),
-                        Text(
-                          'Cari Dokter',
-                          style: TextStyle(
-                              color: lightColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 15),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    hintText: 'Cari apa yang kamu butuhkan....',
-                                    contentPadding:
-                                        EdgeInsets.symmetric(horizontal: 10.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: khakiColor,
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        'Cari Dokter',
+                        style: TextStyle(
+                            color: lightColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Cari apa yang kamu butuhkan....',
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
+                                  filled: true,
+                                  fillColor: khakiColor,
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: alertColor,
+                                borderRadius: BorderRadius.circular(10.0),
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: alertColor,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: IconButton(
-                                  icon: Icon(Icons.search, color: lightColor),
-                                  onPressed: () {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Dokter Teratas',
-                                style: TextStyle(
-                                    color: lightColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              TextButton(
+                              child: IconButton(
+                                icon: Icon(Icons.search, color: lightColor),
                                 onPressed: () {},
-                                child: Text(
-                                  'Lihat Semuanya',
-                                  style: TextStyle(color: lightColor),
-                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        ...List.generate(
-                            20,
-                            (index) => ListTile(
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Dokter Teratas',
+                              style: TextStyle(
+                                  color: lightColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Lihat Semuanya',
+                                style: TextStyle(color: lightColor),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ...List.generate(
+                          20,
+                          (index) => InkWell(
+                                onTap: () {
+                                  redirectTo(context, "/detail-dokter");
+                                },
+                                child: ListTile(
                                   title: Text('Dr. Ahmad Taufik',
                                       style: lightTextStyle.copyWith(
                                           fontWeight: FontWeight.bold)),
@@ -145,10 +147,10 @@ class _CariDokterPageState extends State<CariDokterPage> {
                                   leading: CircleAvatar(
                                     child: Icon(Icons.person),
                                   ),
-                                )),
-                      ],
-                    );
-                  },
+                                ),
+                              )),
+                    ],
+                  ),
                 ),
               );
             },

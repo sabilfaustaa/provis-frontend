@@ -5,12 +5,14 @@ double defaultMargin = 40.0;
 double defaultMarginHome = 18.0;
 
 const Color primaryColor = Color(0xff278EA5);
+const Color inputColor = Color(0xff1D7183);
 const Color lightColor = Color(0xffF0F0F0);
 const Color khakiColor = Color(0xffB3CAD5);
 
 const Color darkPrimaryColor = Color(0xff22364B);
 const Color secondaryColor = Color(0xff5FBD9B);
 const Color alertColor = Color(0xffFFB154);
+const Color orangeColor = Color(0xffED772F);
 const Color priceColor = Color(0xff278EA5);
 
 BoxDecoration gradientAuthBoxDecoration = BoxDecoration(
@@ -67,6 +69,9 @@ TextStyle lightTextStyle = GoogleFonts.montserrat(
 );
 TextStyle secondaryTextStyle = GoogleFonts.montserrat(
   color: secondaryColor,
+);
+TextStyle orangeTextStyle = GoogleFonts.montserrat(
+  color: orangeColor,
 );
 
 FontWeight light = FontWeight.w300;
