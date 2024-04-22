@@ -28,6 +28,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               isSelected: selectedIndex == 0,
               context: context,
             ),
+            SizedBox(width: 5),
             _buildTabItem(
               icon: Icons.message,
               index: 1,
@@ -35,7 +36,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               isSelected: selectedIndex == 1,
               context: context,
             ),
-            SizedBox(width: 48),
+            SizedBox(width: 110),
             _buildTabItem(
               icon: Icons.list,
               index: 2,
@@ -43,6 +44,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               isSelected: selectedIndex == 2,
               context: context,
             ),
+            SizedBox(width: 5),
             _buildTabItem(
               icon: Icons.person,
               index: 3,
@@ -58,7 +60,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   Widget _buildTabItem({
     required IconData icon,
-    required String label, // Tambahkan parameter label
+    required String label,
     required int index,
     required bool isSelected,
     required BuildContext context,
@@ -88,12 +90,12 @@ class CustomBottomNavigationBar extends StatelessWidget {
             size: isSelected ? 34 : 28,
             color: isSelected ? alertColor : lightColor,
           ),
-          SizedBox(height: 4), // Jarak antara ikon dan label
+          SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
               color: isSelected ? alertColor : lightColor,
-              fontSize: 12, // Sesuaikan ukuran font sesuai kebutuhan
+              fontSize: 12,
             ),
           ),
         ],

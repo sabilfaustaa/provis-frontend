@@ -467,15 +467,28 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(
-          Icons.warning,
-          size: 28,
-        ),
-        backgroundColor: alertColor,
-        elevation: 2.0,
-        shape: CircleBorder(),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          FloatingActionButton(
+            onPressed: () {},
+            child: Icon(
+              Icons.warning,
+              size: 28,
+            ),
+            backgroundColor: alertColor,
+            elevation: 2.0,
+            shape: CircleBorder(),
+          ),
+          SizedBox(height: 4), // Jarak antara ikon dan label
+          Text(
+            'Gawat Darurat', // Ganti 'Label' dengan teks yang diinginkan
+            style: lightTextStyle.copyWith(fontSize: 12),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomNavigationBar(
