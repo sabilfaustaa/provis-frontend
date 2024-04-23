@@ -37,22 +37,21 @@ class MyApp extends StatelessWidget {
         // '/': (context) => RiwayatKonsultasiPage(),
 
         '/': (context) => SplashPage(),
-        '/home': (context) => HomePage(), // done
-        '/sign-in': (context) => SignInPage(), // done
-        '/forgot-password': (context) => ForgotPasswordPage(), // done
-        '/sign-up': (context) => SignUpPage(), // done
+        '/home': (context) => HomePage(),
+        '/sign-in': (context) => SignInPage(),
+        '/forgot-password': (context) => ForgotPasswordPage(),
+        '/sign-up': (context) => SignUpPage(),
 
-        '/profile': (context) => ProfilePage(), // done
-        '/cari-dokter': (context) => CariDokterPage(), // done
-        '/detail-dokter': (context) => DetailDokterPage(), // done
-        '/jadwal-konsultasi': (context) => JadwalKonsultasiPage(), // done
-        '/pesan': (context) => PesanPage(), // done
-        '/list-pesan': (context) => ListPesanPage(), // done
-        '/input-diagnosa-pasien': (context) =>
-            InputDiagnosaPasienPage(), // done
-        '/diagnosa-pasien': (context) => DiagnosaPasienPage(), // done
-        '/riwayat-transaksi': (context) => RiwayatTransaksiPage(), // done
-        '/riwayat-konsultasi': (context) => RiwayatKonsultasiPage(), // done
+        '/profile': (context) => ProfilePage(),
+        '/cari-dokter': (context) => CariDokterPage(),
+        '/detail-dokter': (context) => DetailDokterPage(),
+        '/jadwal-konsultasi': (context) => JadwalKonsultasiPage(),
+        '/pesan': (context) => PesanPage(),
+        '/list-pesan': (context) => ListPesanPage(),
+        '/input-diagnosa-pasien': (context) => InputDiagnosaPasienPage(),
+        '/diagnosa-pasien': (context) => DiagnosaPasienPage(),
+        '/riwayat-transaksi': (context) => RiwayatTransaksiPage(),
+        '/riwayat-konsultasi': (context) => RiwayatKonsultasiPage(),
 
         '/panduan-aplikasi': (context) => PanduanAplikasiPage(),
         '/panduan-obat': (context) => PanduanObatPage(),
