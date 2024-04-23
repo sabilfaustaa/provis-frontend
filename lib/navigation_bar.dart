@@ -40,7 +40,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             _buildTabItem(
               icon: Icons.list,
               index: 2,
-              label: 'Transaksi',
+              label: 'Riwayat',
               isSelected: selectedIndex == 2,
               context: context,
             ),
@@ -72,7 +72,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Navigator.pushNamed(context, '/home');
             break;
           case 1:
-            Navigator.pushNamed(context, '/pesan');
+            Navigator.pushNamed(context, '/list-pesan');
             break;
           case 2:
             Navigator.pushNamed(context, '/riwayat-transaksi');

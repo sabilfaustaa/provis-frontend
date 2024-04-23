@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
     },
     {
       'title': 'Janji Online',
-      'redirectLink': '/janji-online',
+      'redirectLink': '/cari-dokter',
       'src': 'icon_home/janji_online.png',
       'link': ''
     },
@@ -288,14 +288,19 @@ class _HomePageState extends State<HomePage> {
                     scrollDirection: Axis.horizontal,
                     itemCount: 4,
                     itemBuilder: (context, index) {
-                      return Card(
-                        child: Container(
-                          width: 140,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Image.network(
-                              listPanduan[index],
-                              fit: BoxFit.cover,
+                      return GestureDetector(
+                        onTap: () {
+                          // redirectTo(context, "/panduan-aplikasi");
+                        },
+                        child: Card(
+                          child: Container(
+                            width: 140,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                listPanduan[index],
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),

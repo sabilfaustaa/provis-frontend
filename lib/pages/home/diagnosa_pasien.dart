@@ -24,7 +24,7 @@ class DiagnosaPasienPage extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.arrow_back, color: lightColor),
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          Navigator.pop(context);
                         },
                       ),
                       Text(
