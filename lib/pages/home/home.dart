@@ -14,49 +14,49 @@ class _HomePageState extends State<HomePage> {
       'title': 'Cari Dokter',
       'redirectLink': '/cari-dokter',
       'src': 'icon_home/cari_dokter.png',
-      'link': ''
+      'is_disabled': false
     },
     {
       'title': 'Janji Online',
       'redirectLink': '/cari-dokter',
       'src': 'icon_home/janji_online.png',
-      'link': ''
+      'is_disabled': false
     },
     {
       'title': 'Rumah Sakit',
       'redirectLink': '/rumah-sakit',
       'src': 'icon_home/rumah_sakit.png',
-      'link': ''
+      'is_disabled': true
     },
     {
       'title': 'Rawat Inap',
       'redirectLink': '/pesan-kamar',
       'src': 'icon_home/rawat_inap.png',
-      'link': ''
+      'is_disabled': true
     },
     {
       'title': 'Toko Kesehatan',
       'redirectLink': '/toko-kesehatan',
       'src': 'icon_home/toko_kesehatan.png',
-      'link': ''
+      'is_disabled': true
     },
     {
       'title': 'Layanan Medis',
       'redirectLink': '/layanan-medis',
       'src': 'icon_home/layanan_medis.png',
-      'link': ''
+      'is_disabled': true
     },
     {
       'title': 'Nomor Darurat',
       'redirectLink': '/nomor-darurat',
       'src': 'icon_home/nomor_darurat.png',
-      'link': ''
+      'is_disabled': true
     },
     {
       'title': 'Lainnya',
       'redirectLink': '/lainnya',
       'src': 'icon_home/lainnya.png',
-      'link': ''
+      'is_disabled': true
     },
   ];
 
@@ -235,7 +235,11 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        redirectTo(context, menuItems[index]['redirectLink']);
+                        if (menuItems[index]['is_disabled'] == false) {
+                          redirectTo(context, menuItems[index]['redirectLink']);
+                        } else {
+                          showSnackBar(context, "Fitur ini belum tersedia.");
+                        }
                       },
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -540,4 +544,14 @@ class _HomePageState extends State<HomePage> {
     _pageController.dispose();
     super.dispose();
   }
+}
+
+void showSnackBar(BuildContext context, String message) {
+  final snackBar = SnackBar(
+    content: Text(message),
+    duration: Duration(seconds: 2), // Durasi SnackBar
+  );
+  ScaffoldMessenger.of(context).showSnackBar(
+    snackBar,
+  );
 }
