@@ -19,6 +19,10 @@ import 'package:digisehat/pages/home/detail_dokter.dart';
 import 'package:digisehat/pages/home/panduan_aplikasi.dart';
 import 'package:digisehat/pages/home/panduan_obat.dart';
 import 'package:digisehat/pages/home/panduan_fitur.dart';
+
+// provider
+import 'package:provider/provider.dart';
+import 'package:digisehat/providers/auth_provider.dart';
 // import 'theme.dart';
 
 void main() {
@@ -30,36 +34,40 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: {
-        // untuk debug :
-        // '/': (context) => RiwayatKonsultasiPage(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          routes: {
+            // untuk debug :
+            // '/': (context) => RiwayatKonsultasiPage(),
 
-        '/': (context) => SplashPage(),
-        '/home': (context) => HomePage(),
-        '/sign-in': (context) => SignInPage(),
-        '/forgot-password': (context) => ForgotPasswordPage(),
-        '/sign-up': (context) => SignUpPage(),
+            '/': (context) => SplashPage(),
+            '/home': (context) => HomePage(),
+            '/sign-in': (context) => SignInPage(),
+            '/forgot-password': (context) => ForgotPasswordPage(),
+            '/sign-up': (context) => SignUpPage(),
 
-        '/profile': (context) => ProfilePage(),
-        '/cari-dokter': (context) => CariDokterPage(),
-        '/detail-dokter': (context) => DetailDokterPage(),
-        '/jadwal-konsultasi': (context) => JadwalKonsultasiPage(),
-        '/pesan': (context) => PesanPage(),
-        '/list-pesan': (context) => ListPesanPage(),
-        '/input-diagnosa-pasien': (context) => InputDiagnosaPasienPage(),
-        '/diagnosa-pasien': (context) => DiagnosaPasienPage(),
-        '/riwayat-transaksi': (context) => RiwayatTransaksiPage(),
-        '/riwayat-konsultasi': (context) => RiwayatKonsultasiPage(),
+            '/profile': (context) => ProfilePage(),
+            '/cari-dokter': (context) => CariDokterPage(),
+            '/detail-dokter': (context) => DetailDokterPage(),
+            '/jadwal-konsultasi': (context) => JadwalKonsultasiPage(),
+            '/pesan': (context) => PesanPage(),
+            '/list-pesan': (context) => ListPesanPage(),
+            '/input-diagnosa-pasien': (context) => InputDiagnosaPasienPage(),
+            '/diagnosa-pasien': (context) => DiagnosaPasienPage(),
+            '/riwayat-transaksi': (context) => RiwayatTransaksiPage(),
+            '/riwayat-konsultasi': (context) => RiwayatKonsultasiPage(),
 
-        '/panduan-aplikasi': (context) => PanduanAplikasiPage(),
-        '/panduan-obat': (context) => PanduanObatPage(),
-        '/panduan-fitur': (context) => PanduanFiturPage(),
+            '/panduan-aplikasi': (context) => PanduanAplikasiPage(),
+            '/panduan-obat': (context) => PanduanObatPage(),
+            '/panduan-fitur': (context) => PanduanFiturPage(),
 
-        '/obat-pasien': (context) => ObatPasienPage(),
-        '/notifikasi': (context) => NotifikasiPage(),
-      },
-    );
+            '/obat-pasien': (context) => ObatPasienPage(),
+            '/notifikasi': (context) => NotifikasiPage(),
+          },
+        ));
   }
 }

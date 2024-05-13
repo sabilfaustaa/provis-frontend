@@ -8,6 +8,7 @@ Widget buildBackground(BoxDecoration boxDecoration) {
 }
 
 Widget buildTextField({
+  TextEditingController? controller,
   required String hint,
   required bool obscureText,
   required IconData prefixIcon,
@@ -16,6 +17,7 @@ Widget buildTextField({
   double fieldHeight = 48.0,
 }) {
   return TextField(
+    controller: controller,
     obscureText: obscureText,
     decoration: InputDecoration(
       hintText: hint,
