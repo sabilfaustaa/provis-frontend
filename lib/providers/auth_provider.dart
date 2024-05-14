@@ -13,7 +13,7 @@ class AuthProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<bool> login(String username, String password) async {
-    var url = Uri.parse('$endpoint/sign-in');
+    var url = Uri.parse('$endpoint/login');
     var response = await http.post(
       url,
       headers: <String, String>{

@@ -189,7 +189,7 @@ class _SignUpPageState extends State<SignUpPage> {
         content: Text("Pendaftaran berhasil!"),
         backgroundColor: Colors.green,
       ));
-      Navigator.pushNamed(context, '/login');
+      Navigator.pushNamed(context, '/sign-in');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Pendaftaran gagal, coba lagi."),
