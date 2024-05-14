@@ -34,7 +34,7 @@ class SignInPage extends StatelessWidget {
               _buildAvatar(),
               buildTextField(
                   controller: _usernameController,
-                  hint: 'Email',
+                  hint: 'username',
                   obscureText: false,
                   prefixIcon: Icons.email,
                   iconColor: primaryColor,
@@ -42,7 +42,7 @@ class SignInPage extends StatelessWidget {
               SizedBox(height: 16),
               buildTextField(
                   controller: _passwordController,
-                  hint: 'Password',
+                  hint: 'password',
                   obscureText: true,
                   prefixIcon: Icons.lock,
                   iconColor: primaryColor,
