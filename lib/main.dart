@@ -1,3 +1,4 @@
+import 'package:digisehat/no_auth_guard.dart';
 import 'package:digisehat/pages/home/diagnosa_pasien.dart';
 import 'package:digisehat/pages/home/input_diagnosa_paien.dart';
 import 'package:digisehat/pages/home/jadwal_konsultasi.dart';
@@ -7,6 +8,7 @@ import 'package:digisehat/pages/home/obat_pasien.dart';
 import 'package:digisehat/pages/home/pesan.dart';
 import 'package:digisehat/pages/home/riwayat_konsultasi.dart';
 import 'package:digisehat/pages/home/riwayat_transaksi.dart';
+import 'package:digisehat/providers/doctor_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:digisehat/pages/sign_in.dart';
 import 'package:digisehat/pages/sign_up.dart';
@@ -23,7 +25,7 @@ import 'package:digisehat/pages/home/panduan_fitur.dart';
 // provider
 import 'package:provider/provider.dart';
 import 'package:digisehat/providers/auth_provider.dart';
-// import 'theme.dart';
+import 'auth_guard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,36 +39,38 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => AuthProvider()),
+          ChangeNotifierProvider(create: (_) => DoctorProvider()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           routes: {
-            // untuk debug :
-            // '/': (context) => RiwayatKonsultasiPage(),
-
             '/': (context) => SplashPage(),
-            '/home': (context) => HomePage(),
-            '/sign-in': (context) => SignInPage(),
-            '/forgot-password': (context) => ForgotPasswordPage(),
-            '/sign-up': (context) => SignUpPage(),
-
-            '/profile': (context) => ProfilePage(),
-            '/cari-dokter': (context) => CariDokterPage(),
-            '/detail-dokter': (context) => DetailDokterPage(),
-            '/jadwal-konsultasi': (context) => JadwalKonsultasiPage(),
-            '/pesan': (context) => PesanPage(),
-            '/list-pesan': (context) => ListPesanPage(),
-            '/input-diagnosa-pasien': (context) => InputDiagnosaPasienPage(),
-            '/diagnosa-pasien': (context) => DiagnosaPasienPage(),
-            '/riwayat-transaksi': (context) => RiwayatTransaksiPage(),
-            '/riwayat-konsultasi': (context) => RiwayatKonsultasiPage(),
-
-            '/panduan-aplikasi': (context) => PanduanAplikasiPage(),
-            '/panduan-obat': (context) => PanduanObatPage(),
-            '/panduan-fitur': (context) => PanduanFiturPage(),
-
-            '/obat-pasien': (context) => ObatPasienPage(),
-            '/notifikasi': (context) => NotifikasiPage(),
+            '/home': (context) => AuthGuard(child: HomePage()),
+            '/sign-in': (context) => NoAuthGuard(child: SignInPage()),
+            '/forgot-password': (context) =>
+                NoAuthGuard(child: ForgotPasswordPage()),
+            '/sign-up': (context) => NoAuthGuard(child: SignUpPage()),
+            '/profile': (context) => AuthGuard(child: ProfilePage()),
+            '/cari-dokter': (context) => AuthGuard(child: CariDokterPage()),
+            '/detail-dokter': (context) => AuthGuard(child: DetailDokterPage()),
+            '/jadwal-konsultasi': (context) =>
+                AuthGuard(child: JadwalKonsultasiPage()),
+            '/pesan': (context) => AuthGuard(child: PesanPage()),
+            '/list-pesan': (context) => AuthGuard(child: ListPesanPage()),
+            '/input-diagnosa-pasien': (context) =>
+                AuthGuard(child: InputDiagnosaPasienPage()),
+            '/diagnosa-pasien': (context) =>
+                AuthGuard(child: DiagnosaPasienPage()),
+            '/riwayat-transaksi': (context) =>
+                AuthGuard(child: RiwayatTransaksiPage()),
+            '/riwayat-konsultasi': (context) =>
+                AuthGuard(child: RiwayatKonsultasiPage()),
+            '/panduan-aplikasi': (context) =>
+                AuthGuard(child: PanduanAplikasiPage()),
+            '/panduan-obat': (context) => AuthGuard(child: PanduanObatPage()),
+            '/panduan-fitur': (context) => AuthGuard(child: PanduanFiturPage()),
+            '/obat-pasien': (context) => AuthGuard(child: ObatPasienPage()),
+            '/notifikasi': (context) => AuthGuard(child: NotifikasiPage()),
           },
         ));
   }

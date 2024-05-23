@@ -74,7 +74,7 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Tentang Dokter',
+                                'Pendidikan dan Pengalaman',
                                 style: TextStyle(
                                   color: lightColor,
                                   fontSize: 20,
@@ -83,7 +83,41 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'Pendidikan dan Pengalaman : Dr. Ahmad Hanif adalah seorang dokter mata yang berpengalaman dan berkualifikasi tinggi. Dia lulus dengan predikat cum laude dari salah satu universitas terkemuka di negaranya dan kemudian menyelesaikan residensi serta fellowship dalam bidang oftalmologi di rumah sakit terkemuka di dalam dan luar negeri. Selama karirnya, Dr. Hanif telah bekerja dengan berbagai kasus yang berkaitan dengan mata, mulai dari masalah refraksi hingga prosedur bedah kompleks.',
+                                'Dr. Ahmad Hanif adalah seorang dokter mata yang berpengalaman dan berkualifikasi tinggi. Dia lulus dengan predikat cum laude dari salah satu universitas terkemuka di negaranya dan kemudian ',
+                                style: TextStyle(
+                                  color: lightColor.withOpacity(0.7),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Filosofi Perawatan',
+                                style: TextStyle(
+                                  color: lightColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Dr. Ahmad Hanif adalah seorang dokter mata yang berpengalaman dan berkualifikasi tinggi. Dia lulus dengan predikat cum laude dari salah satu universitas terkemuka di negaranya dan kemudian ',
+                                style: TextStyle(
+                                  color: lightColor.withOpacity(0.7),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Inovasi dan Penelitian',
+                                style: TextStyle(
+                                  color: lightColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Dr. Ahmad Hanif adalah seorang dokter mata yang berpengalaman dan berkualifikasi tinggi. Dia lulus dengan predikat cum laude dari salah satu universitas terkemuka di negaranya dan kemudian ',
                                 style: TextStyle(
                                   color: lightColor.withOpacity(0.7),
                                   fontSize: 14,

@@ -1,7 +1,9 @@
 import 'package:digisehat/helpers.dart';
 import 'package:digisehat/theme.dart';
 import 'package:digisehat/navigation_bar.dart';
+import 'package:digisehat/providers/doctor_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CariDokterPage extends StatefulWidget {
   @override
@@ -10,10 +12,41 @@ class CariDokterPage extends StatefulWidget {
 
 class _CariDokterPageState extends State<CariDokterPage> {
   int _selectedIndex = 0;
+  TextEditingController _searchController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadInitialDoctors();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _loadInitialDoctors() {
+    final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+    doctorProvider.reset();
+    doctorProvider.fetchDoctors('', reset: true);
+  }
+
+  void _scrollListener() {
+    final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      doctorProvider.fetchDoctors(_searchController.text);
+    }
+  }
+
   void _selectTab(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -26,7 +59,8 @@ class _CariDokterPageState extends State<CariDokterPage> {
               color: primaryColor,
               image: DecorationImage(
                 image: AssetImage('assets/cari_dokter_image.png'),
-                fit: BoxFit.cover,
+                repeat: ImageRepeat.noRepeat,
+                fit: BoxFit.contain,
               ),
             ),
             child: Padding(
@@ -65,9 +99,9 @@ class _CariDokterPageState extends State<CariDokterPage> {
             ),
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.60,
-            minChildSize: 0.60,
-            maxChildSize: 0.9,
+            initialChildSize: 0.63,
+            minChildSize: 0.63,
+            maxChildSize: 1,
             builder: (BuildContext context, ScrollController scrollController) {
               return Container(
                 decoration: BoxDecoration(
@@ -117,6 +151,7 @@ class _CariDokterPageState extends State<CariDokterPage> {
                           children: [
                             Expanded(
                               child: TextField(
+                                controller: _searchController,
                                 decoration: InputDecoration(
                                   hintText: 'Cari apa yang kamu butuhkan....',
                                   contentPadding:
@@ -139,7 +174,14 @@ class _CariDokterPageState extends State<CariDokterPage> {
                               ),
                               child: IconButton(
                                 icon: Icon(Icons.search, color: lightColor),
-                                onPressed: () {},
+                                onPressed: () {
+                                  final doctorProvider =
+                                      Provider.of<DoctorProvider>(context,
+                                          listen: false);
+                                  doctorProvider.fetchDoctors(
+                                      _searchController.text,
+                                      reset: true);
+                                },
                               ),
                             ),
                           ],
@@ -166,23 +208,27 @@ class _CariDokterPageState extends State<CariDokterPage> {
                           ],
                         ),
                       ),
-                      ...List.generate(
-                          10,
-                          (index) => InkWell(
+                      Consumer<DoctorProvider>(
+                        builder: (context, doctorProvider, child) {
+                          return Column(
+                            children: doctorProvider.doctors.map((doctor) {
+                              return InkWell(
                                 onTap: () {
                                   redirectTo(context, "/detail-dokter");
                                 },
                                 child: ListTile(
-                                  title: Text('Dr. Ahmad Taufik',
-                                      style: lightTextStyle.copyWith(
-                                          fontWeight: FontWeight.bold)),
+                                  title: Text(
+                                    doctor.name,
+                                    style: lightTextStyle.copyWith(
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                   subtitle: Text(
-                                    'Dokter Kandungan',
+                                    doctor.specialty,
                                     style: TextStyle(
                                         fontSize: 12, color: Colors.amber),
                                   ),
                                   trailing: Text(
-                                    '2.1 KM',
+                                    '10 KM',
                                     style: lightTextStyle.copyWith(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -191,7 +237,11 @@ class _CariDokterPageState extends State<CariDokterPage> {
                                     child: Icon(Icons.person),
                                   ),
                                 ),
-                              )),
+                              );
+                            }).toList(),
+                          );
+                        },
+                      ),
                       SizedBox(
                         height: 20,
                       )
