@@ -1,8 +1,12 @@
-import 'package:digisehat/navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:digisehat/navigation_bar.dart';
 import 'package:digisehat/theme.dart';
 import 'package:digisehat/component.dart';
 import 'package:digisehat/helpers.dart';
+
 
 class RiwayatTransaksiPage extends StatefulWidget {
   const RiwayatTransaksiPage({super.key});
@@ -12,11 +16,36 @@ class RiwayatTransaksiPage extends StatefulWidget {
 }
 
 class _RiwayatTransaksiPageState extends State<RiwayatTransaksiPage> {
-  int _selectedIndex = 0;
-  void _selectTab(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  late Future<List<dynamic>> _transactionHistory;
+
+  @override
+  void initState() {
+    super.initState();
+    _transactionHistory = fetchTransactionHistory();
+  }
+
+  Future<List<dynamic>> fetchTransactionHistory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_token');
+    int? userId = prefs.getInt('user_id');
+
+    if (token == null || userId == null) {
+      throw Exception('User not logged in or session expired');
+    }
+
+    final response = await http.get(
+      Uri.parse('http://127.0.0.1:8000/order_patient/$userId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load transaction history');
+    }
   }
 
   @override
@@ -25,126 +54,57 @@ class _RiwayatTransaksiPageState extends State<RiwayatTransaksiPage> {
       body: Stack(
         children: [
           buildBackground(gradientHomeBoxDecoration),
-          Padding(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back, color: lightColor),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      Text(
-                        'Transaksi',
-                        style: lightTextStyle.copyWith(
-                            fontSize: 20.0, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox()
-                    ],
+                AppBar(
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
+                  title: Text('Riwayat Transaksi', style: TextStyle(color: Colors.white)),
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                ),
+                FutureBuilder<List<dynamic>>(
+                  future: _transactionHistory,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text("Error: ${snapshot.error}"));
+                    } else if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return TransactionCard(transaction: snapshot.data![index]);
+                        },
+                      );
+                    } else {
+                      return Center(child: Text("No transactions found"));
+                    }
+                  },
                 ),
               ],
             ),
           ),
-          SingleChildScrollView(
-            padding: EdgeInsets.only(top: 50),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Cari transaksi....',
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              filled: true,
-                              fillColor: khakiColor,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: alertColor,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: IconButton(
-                            icon: Icon(Icons.search, color: lightColor),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: GestureDetector(
-                      onTap: () {
-                        redirectTo(context, "/diagnosa-pasien");
-                      },
-                      child: TransactionCard(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
         ],
       ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: 15,
-          ),
-          FloatingActionButton(
-            onPressed: () {},
-            child: Icon(
-              Icons.warning,
-              size: 28,
-            ),
-            backgroundColor: alertColor,
-            elevation: 2.0,
-            shape: CircleBorder(),
-          ),
-          SizedBox(height: 4),
-          Text(
-            'Gawat Darurat',
-            style: lightTextStyle.copyWith(fontSize: 12),
-          ),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: _selectedIndex,
-        onItemSelected: (index) {
-          _selectTab(index);
-        },
+        selectedIndex: 0,
+        onItemSelected: (index) {},
       ),
     );
   }
 }
 
 class TransactionCard extends StatelessWidget {
-  const TransactionCard({Key? key}) : super(key: key);
+  final dynamic transaction;
+
+  const TransactionCard({super.key, required this.transaction});
 
   @override
   Widget build(BuildContext context) {
@@ -162,45 +122,33 @@ class TransactionCard extends StatelessWidget {
               bottomLeft: Radius.circular(15.0),
             ),
             child: Image.network(
-              'assets/dummy-artikel.png', // Replace with your image URL.
+              'assets/dummy-artikel.png', // Replace with actual image URL.
               height: 130,
               width: 140,
               fit: BoxFit.cover,
             ),
           ),
-          SizedBox(
-            width: 20,
-          ),
+          SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Transaksi Obat',
-                  style:
-                      lightTextStyle.copyWith(fontSize: 18, fontWeight: bold),
+                  transaction['payment'],
+                  style: lightTextStyle.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'Rp. 9,800,00',
-                  style: lightTextStyle.copyWith(fontWeight: medium),
+                  'Rp ${transaction['medicine_id']}',
+                  style: lightTextStyle.copyWith(fontWeight: FontWeight.normal),
                 ),
-                SizedBox(height: 4.0),
                 Text(
-                  'Obat Ibuprofen',
+                  transaction['courier'],
                   style: lightTextStyle,
                 ),
-                SizedBox(height: 4.0),
                 Text(
-                  'Terbeli | 3 Buah',
+                  'Delivered to: ${transaction['address']}',
                   style: lightTextStyle,
-                ),
-                SizedBox(height: 16.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    // buildButton(context, "Lihat Detail", () {}, orangeColor,
-                    //     lightColor)
-                  ],
                 ),
               ],
             ),
