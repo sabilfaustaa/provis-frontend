@@ -48,6 +48,30 @@ class _RiwayatTransaksiPageState extends State<RiwayatTransaksiPage> {
     }
   }
 
+  Future<double> fetchMedicinePrice(int medicineId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_token');
+
+    if (token == null) {
+      throw Exception('User not logged in or session expired');
+    }
+
+    final response = await http.get(
+      Uri.parse('http://127.0.0.1:8000/medicine/$medicineId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return double.parse(data['price'].toString());  // 'price' adalah bagian dari respons
+    } else {
+      throw Exception('Failed to load medicine price');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,11 +112,78 @@ class _RiwayatTransaksiPageState extends State<RiwayatTransaksiPage> {
                     }
                   },
                 ),
+                Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Cari transaksi....',
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              fillColor: khakiColor,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: alertColor,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: IconButton(
+                            icon: Icon(Icons.search, color: lightColor),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        redirectTo(context, "/diagnosa-pasien");
+                      },
+                      child: TransactionCard(transaction: null,),
+                    ),
+                  )
               ],
             ),
           ),
         ],
       ),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          FloatingActionButton(
+            onPressed: () {},
+            backgroundColor: alertColor,
+            elevation: 2.0,
+            shape: CircleBorder(),
+            child: Icon(
+              Icons.warning,
+              size: 28,
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            'Gawat Darurat',
+            style: lightTextStyle.copyWith(fontSize: 12),
+          ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: 0,
         onItemSelected: (index) {},
@@ -139,7 +230,7 @@ class TransactionCard extends StatelessWidget {
                   style: lightTextStyle.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'Rp ${transaction['medicine_id']}',
+                  'Rp ${transaction['price']}',
                   style: lightTextStyle.copyWith(fontWeight: FontWeight.normal),
                 ),
                 Text(
