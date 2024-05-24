@@ -48,6 +48,30 @@ class _RiwayatTransaksiPageState extends State<RiwayatTransaksiPage> {
     }
   }
 
+  Future<double> fetchMedicinePrice(int medicineId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_token');
+
+    if (token == null) {
+      throw Exception('User not logged in or session expired');
+    }
+
+    final response = await http.get(
+      Uri.parse('http://127.0.0.1:8000/medicine/$medicineId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return double.parse(data['price'].toString());  // 'price' adalah bagian dari respons
+    } else {
+      throw Exception('Failed to load medicine price');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,7 +163,7 @@ class TransactionCard extends StatelessWidget {
                   style: lightTextStyle.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'Rp ${transaction['medicine_id']}',
+                  'Rp ${transaction['price']}',
                   style: lightTextStyle.copyWith(fontWeight: FontWeight.normal),
                 ),
                 Text(
