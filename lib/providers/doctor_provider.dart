@@ -1,3 +1,4 @@
+import 'package:digisehat/models/consultation_schedule.dart';
 import 'package:digisehat/models/review.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,12 +14,14 @@ class DoctorProvider with ChangeNotifier {
   int _skip = 0;
   int _limit = 15;
   Doctor? _selectedDoctor;
+  ConsultationSchedule? _consultationSchedule;
 
   Doctor? get doctor => _doctor;
   List<Doctor> get doctors => _doctors;
   List<Review> get reviews => _reviews;
   bool get isLoading => _isLoading;
   Doctor? get selectedDoctor => _selectedDoctor;
+  ConsultationSchedule? get consultationSchedule => _consultationSchedule;
 
   Future<void> fetchDoctors(String query, {bool reset = false}) async {
     if (reset) {
@@ -109,8 +112,9 @@ class DoctorProvider with ChangeNotifier {
 
   Future<bool> createSchedule(int doctorId, String date, String time,
       String location, int patientId, String reservationNum) async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_token');
+
     final response = await http.post(
       Uri.parse('http://127.0.0.1:8000/create_schedule'),
       headers: {
@@ -128,6 +132,29 @@ class DoctorProvider with ChangeNotifier {
     );
 
     return response.statusCode == 200;
+  }
+
+  Future<ConsultationSchedule?> fetchConsultationSchedule(int patientId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    var url = Uri.parse('http://127.0.0.1:8000/schedule_patient/$patientId');
+    var response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      _consultationSchedule =
+          ConsultationSchedule.fromJson(json.decode(response.body));
+      notifyListeners();
+      return _consultationSchedule;
+    } else {
+      throw Exception('Failed to load consultation schedule');
+    }
   }
 
   void reset() {

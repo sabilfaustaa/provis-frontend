@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:digisehat/theme.dart';
 import 'package:digisehat/component.dart';
-import 'package:digisehat/helpers.dart';
+// import 'package:digisehat/helpers.dart';
 
 class DiagnosaPasienPage extends StatelessWidget {
   @override
