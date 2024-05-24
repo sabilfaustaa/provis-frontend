@@ -1,6 +1,6 @@
 import 'package:digisehat/helpers.dart';
 import 'package:digisehat/theme.dart';
-import 'package:digisehat/navigation_bar.dart';
+// import 'package:digisehat/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:digisehat/component.dart';
 
@@ -10,13 +10,6 @@ class PanduanObatPage extends StatefulWidget {
 }
 
 class _PanduanObatPageState extends State<PanduanObatPage> {
-  int _selectedIndex = 0;
-  void _selectTab(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

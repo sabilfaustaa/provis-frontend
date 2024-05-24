@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/doctor.dart';
-import '../providers/auth_provider.dart';
 
 class DoctorProvider with ChangeNotifier {
   List<Doctor> _doctors = [];
@@ -13,11 +12,13 @@ class DoctorProvider with ChangeNotifier {
   bool _isLoading = false;
   int _skip = 0;
   int _limit = 15;
+  Doctor? _selectedDoctor;
 
   Doctor? get doctor => _doctor;
   List<Doctor> get doctors => _doctors;
   List<Review> get reviews => _reviews;
   bool get isLoading => _isLoading;
+  Doctor? get selectedDoctor => _selectedDoctor;
 
   Future<void> fetchDoctors(String query, {bool reset = false}) async {
     if (reset) {
@@ -106,32 +107,27 @@ class DoctorProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> submitConsultation(int doctorId, String timeSlot) async {
-    _isLoading = true;
-    notifyListeners();
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('auth_token');
-
-    var url = Uri.parse('http://127.0.0.1:8000/create_consultation');
-    var response = await http.post(
-      url,
+  Future<bool> createSchedule(int doctorId, String date, String time,
+      String location, int patientId, String reservationNum) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    final response = await http.post(
+      Uri.parse('http://127.0.0.1:8000/create_schedule'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
       body: jsonEncode({
         'doctor_id': doctorId,
-        'time_slot': timeSlot,
+        'date': date,
+        'time': time,
+        'reservation_num': reservationNum,
+        'location': location,
+        'patient_id': patientId,
       }),
     );
 
-    if (response.statusCode == 200) {
-      // handle success
-    }
-
-    _isLoading = false;
-    notifyListeners();
+    return response.statusCode == 200;
   }
 
   void reset() {

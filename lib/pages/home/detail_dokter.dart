@@ -1,10 +1,12 @@
-import 'package:digisehat/helpers.dart';
+import 'package:digisehat/providers/auth_provider.dart';
 import 'package:digisehat/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:digisehat/providers/doctor_provider.dart';
 import 'package:digisehat/models/doctor.dart';
 import 'package:digisehat/models/review.dart';
+import 'package:intl/intl.dart';
+import 'dart:math';
 
 class DetailDokterPage extends StatefulWidget {
   final int doctorId;
@@ -16,6 +18,77 @@ class DetailDokterPage extends StatefulWidget {
 }
 
 class _DetailDokterPageState extends State<DetailDokterPage> {
+  DateTime? _selectedDate;
+  String? _selectedTime;
+  List<String> times = [
+    '08:30 - 09:00',
+    '09:00 - 09:30',
+    '09:30 - 10:00',
+    '10:00 - 10:30',
+    '10:30 - 11:00',
+    '11:00 - 11:30',
+    '16:30 - 17:00',
+    '17:00 - 17:30',
+    '17:30 - 18:00',
+  ];
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 7)),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: primaryColor,
+            colorScheme: ColorScheme.light(primary: primaryColor),
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
+  String generateReservationNum() {
+    var rng = Random();
+    return rng.nextInt(999999).toString().padLeft(6, '0');
+  }
+
+  void _createSchedule() async {
+    if (_selectedDate != null && _selectedTime != null) {
+      String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
+      var authProvider = Provider.of<AuthProvider>(context, listen: false);
+      bool success = await Provider.of<DoctorProvider>(context, listen: false)
+          .createSchedule(
+              Provider.of<DoctorProvider>(context, listen: false).doctor!.id,
+              formattedDate,
+              _selectedTime!,
+              Provider.of<DoctorProvider>(context, listen: false)
+                  .doctor!
+                  .hospital,
+              authProvider.user!.id,
+              generateReservationNum());
+      if (success) {
+        Navigator.pushNamed(context, '/jadwal-konsultasi');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal membuat jadwal konsultasi')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Pilih tanggal dan waktu terlebih dahulu')),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -145,15 +218,17 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
                                     Divider(color: lightColor),
                                   ],
                                 )),
-                            JadwalDokter(),
-                            SizedBox(
-                              height: 8,
+                            JadwalDokterSelector(
+                              selectedDate: _selectedDate,
+                              selectedTime: _selectedTime,
+                              onDateSelected: () => _selectDate(context),
+                              onTimeSelected: (time) {
+                                setState(() {
+                                  _selectedTime = time;
+                                });
+                              },
+                              times: times,
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Divider(color: lightColor),
-                            ),
-                            JadwalDokterSelector(),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15.0),
                               child: Divider(color: lightColor),
@@ -180,9 +255,7 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
                   child: Padding(
                     padding: EdgeInsets.all(16),
                     child: FloatingActionButton.extended(
-                      onPressed: () {
-                        redirectTo(context, "/jadwal-konsultasi");
-                      },
+                      onPressed: _createSchedule,
                       label: Text(
                         'Konsultasi Sekarang',
                         style: lightTextStyle.copyWith(fontWeight: bold),
@@ -356,175 +429,20 @@ class HeaderCard extends StatelessWidget {
   }
 }
 
-class JadwalDokter extends StatefulWidget {
-  @override
-  _JadwalDokterState createState() => _JadwalDokterState();
-}
+class JadwalDokterSelector extends StatelessWidget {
+  final DateTime? selectedDate;
+  final String? selectedTime;
+  final Function onDateSelected;
+  final Function(String) onTimeSelected;
+  final List<String> times;
 
-class _JadwalDokterState extends State<JadwalDokter> {
-  String? _selectedYear = '2023';
-  String? _selectedMonth = 'Maret';
-  List<String> years = ['2021', '2022', '2023', '2024', '2025'];
-  List<String> months = [
-    'Januari',
-    'Februari',
-    'Maret',
-    'April',
-    'Mei',
-    'Juni',
-    'Juli',
-    'Agustus',
-    'September',
-    'Oktober',
-    'November',
-    'Desember'
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'Jadwal Dokter',
-                style: TextStyle(
-                  color: lightColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  DropdownButton<String>(
-                    value: _selectedYear,
-                    items: years.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value, style: TextStyle(color: lightColor)),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        _selectedYear = newValue;
-                      });
-                    },
-                    underline: Container(height: 0),
-                    dropdownColor: priceColor,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  DropdownButton<String>(
-                    value: _selectedMonth,
-                    items: months.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value, style: TextStyle(color: lightColor)),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        _selectedMonth = newValue;
-                      });
-                    },
-                    underline: Container(height: 0),
-                    dropdownColor: priceColor,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 31,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                width: 70,
-                margin: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: inputColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Senin',
-                      style: TextStyle(color: lightColor, fontSize: 16),
-                    ),
-                    Text(
-                      '${index + 1}',
-                      style: TextStyle(
-                          color: lightColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class JadwalDokterSelector extends StatefulWidget {
-  @override
-  _JadwalDokterSelectorState createState() => _JadwalDokterSelectorState();
-}
-
-class _JadwalDokterSelectorState extends State<JadwalDokterSelector> {
-  int _selectedScheduleIndex = -1;
-
-  List<String> schedules = [
-    '08.30 - 09.00 WIB',
-    '09.00 - 09.30 WIB',
-    '09.30 - 10.00 WIB',
-    '10.00 - 10.30 WIB',
-    '10.30 - 11.00 WIB',
-    '11.00 - 11.30 WIB',
-    '16.30 - 17.00 WIB',
-    '17.00 - 17.30 WIB',
-    '17.30 - 18.00 WIB',
-  ];
-
-  Widget scheduleButton(int index) {
-    bool isSelected = _selectedScheduleIndex == index;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ChoiceChip(
-        avatar: isSelected
-            ? Icon(Icons.check, color: inputColor)
-            : Icon(Icons.access_time, color: lightColor),
-        label: Text(
-          schedules[index],
-          style: TextStyle(
-            color: isSelected ? Colors.black : lightColor,
-          ),
-        ),
-        selected: isSelected,
-        onSelected: (bool selected) {
-          setState(() {
-            _selectedScheduleIndex = selected ? index : -1;
-          });
-        },
-        selectedColor: secondaryColor,
-        backgroundColor: inputColor,
-        padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
-      ),
-    );
-  }
+  JadwalDokterSelector({
+    required this.selectedDate,
+    required this.selectedTime,
+    required this.onDateSelected,
+    required this.onTimeSelected,
+    required this.times,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -534,14 +452,42 @@ class _JadwalDokterSelectorState extends State<JadwalDokterSelector> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Jadwal Dokter',
+            'Pilih Tanggal dan Waktu',
             style: TextStyle(
                 color: lightColor, fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8),
+          ElevatedButton.icon(
+            icon: Icon(Icons.calendar_today),
+            label: Text(selectedDate == null
+                ? 'Pilih Tanggal'
+                : DateFormat('dd-MM-yyyy').format(selectedDate!)),
+            onPressed: () => onDateSelected(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
+          ),
+          SizedBox(height: 8),
           Wrap(
+            spacing: 8,
+            runSpacing: 4,
             children: List<Widget>.generate(
-                schedules.length, (index) => scheduleButton(index)),
+              times.length,
+              (index) => ChoiceChip(
+                label: Text(
+                  times[index],
+                  style: TextStyle(
+                    color: selectedTime == times[index]
+                        ? Colors.black
+                        : lightColor,
+                  ),
+                ),
+                selected: selectedTime == times[index],
+                onSelected: (selected) => onTimeSelected(times[index]),
+                selectedColor: secondaryColor,
+                backgroundColor: inputColor,
+              ),
+            ),
           ),
         ],
       ),
