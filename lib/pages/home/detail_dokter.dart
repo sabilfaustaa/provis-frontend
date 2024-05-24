@@ -1,186 +1,208 @@
 import 'package:digisehat/helpers.dart';
 import 'package:digisehat/theme.dart';
-import 'package:digisehat/navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:digisehat/component.dart';
+import 'package:provider/provider.dart';
+import 'package:digisehat/providers/doctor_provider.dart';
+import 'package:digisehat/models/doctor.dart';
+import 'package:digisehat/models/review.dart';
 
 class DetailDokterPage extends StatefulWidget {
+  final int doctorId;
+
+  DetailDokterPage({required this.doctorId});
+
   @override
   _DetailDokterPageState createState() => _DetailDokterPageState();
 }
 
 class _DetailDokterPageState extends State<DetailDokterPage> {
-  int _selectedIndex = 0;
-  void _selectTab(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<DoctorProvider>(context, listen: false)
+        .fetchDoctor(widget.doctorId);
+    Provider.of<DoctorProvider>(context, listen: false)
+        .fetchReviews(widget.doctorId);
+    Provider.of<DoctorProvider>(context, listen: false).fetchDoctors("");
   }
 
   @override
   Widget build(BuildContext context) {
+    final doctorProvider = Provider.of<DoctorProvider>(context);
+    final doctor = doctorProvider.doctor;
+    final reviews = doctorProvider.reviews;
+    final otherDoctors = doctorProvider.doctors;
+
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            child: SafeArea(
-              child: FloatingActionButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Icon(Icons.arrow_back, color: Colors.white),
-                backgroundColor: Colors.blue,
-                mini: true,
-              ),
-            ),
-          ),
-          HeaderCard(),
-          DraggableScrollableSheet(
-            initialChildSize: 0.72,
-            minChildSize: 0.72,
-            maxChildSize: 0.95,
-            builder: (BuildContext context, ScrollController scrollController) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: darkPrimaryColor,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 10.0,
-                      color: Colors.black.withOpacity(0.2),
+      body: doctor == null
+          ? Center(child: CircularProgressIndicator())
+          : Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: SafeArea(
+                    child: FloatingActionButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Icon(Icons.arrow_back, color: Colors.white),
+                      backgroundColor: Colors.blue,
+                      mini: true,
                     ),
-                  ],
-                ),
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 8),
-                      Center(
-                        child: Container(
-                          width: 100,
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(2.5),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Pendidikan dan Pengalaman',
-                                style: TextStyle(
-                                  color: lightColor,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Dr. Ahmad Hanif adalah seorang dokter mata yang berpengalaman dan berkualifikasi tinggi. Dia lulus dengan predikat cum laude dari salah satu universitas terkemuka di negaranya dan kemudian ',
-                                style: TextStyle(
-                                  color: lightColor.withOpacity(0.7),
-                                  fontSize: 14,
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Filosofi Perawatan',
-                                style: TextStyle(
-                                  color: lightColor,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Dr. Ahmad Hanif adalah seorang dokter mata yang berpengalaman dan berkualifikasi tinggi. Dia lulus dengan predikat cum laude dari salah satu universitas terkemuka di negaranya dan kemudian ',
-                                style: TextStyle(
-                                  color: lightColor.withOpacity(0.7),
-                                  fontSize: 14,
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Inovasi dan Penelitian',
-                                style: TextStyle(
-                                  color: lightColor,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Dr. Ahmad Hanif adalah seorang dokter mata yang berpengalaman dan berkualifikasi tinggi. Dia lulus dengan predikat cum laude dari salah satu universitas terkemuka di negaranya dan kemudian ',
-                                style: TextStyle(
-                                  color: lightColor.withOpacity(0.7),
-                                  fontSize: 14,
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Divider(color: lightColor),
-                            ],
-                          )),
-                      JadwalDokter(),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.0),
-                        child: Divider(color: lightColor),
-                      ),
-                      JadwalDokterSelector(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.0),
-                        child: Divider(color: lightColor),
-                      ),
-                      ReviewPasien(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.0),
-                        child: Divider(color: lightColor),
-                      ),
-                      DokterSuggestion(),
-                      SizedBox(
-                        height: 80,
-                      )
-                    ],
                   ),
                 ),
-              );
-            },
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: FloatingActionButton.extended(
-                onPressed: () {
-                  redirectTo(context, "/jadwal-konsultasi");
-                },
-                label: Text(
-                  'Konsultasi Sekarang',
-                  style: lightTextStyle.copyWith(fontWeight: bold),
+                HeaderCard(doctor: doctor),
+                DraggableScrollableSheet(
+                  initialChildSize: 0.72,
+                  minChildSize: 0.72,
+                  maxChildSize: 0.95,
+                  builder: (BuildContext context,
+                      ScrollController scrollController) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: darkPrimaryColor,
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 10.0,
+                            color: Colors.black.withOpacity(0.2),
+                          ),
+                        ],
+                      ),
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 8),
+                            Center(
+                              child: Container(
+                                width: 100,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(2.5),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Pendidikan dan Pengalaman',
+                                      style: TextStyle(
+                                        color: lightColor,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      doctor.experience,
+                                      style: TextStyle(
+                                        color: lightColor.withOpacity(0.7),
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      'Filosofi Perawatan',
+                                      style: TextStyle(
+                                        color: lightColor,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      doctor.philosophy,
+                                      style: TextStyle(
+                                        color: lightColor.withOpacity(0.7),
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      'Inovasi dan Penelitian',
+                                      style: TextStyle(
+                                        color: lightColor,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      doctor.innovation,
+                                      style: TextStyle(
+                                        color: lightColor.withOpacity(0.7),
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Divider(color: lightColor),
+                                  ],
+                                )),
+                            JadwalDokter(),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Divider(color: lightColor),
+                            ),
+                            JadwalDokterSelector(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Divider(color: lightColor),
+                            ),
+                            ReviewPasien(reviews: reviews),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Divider(color: lightColor),
+                            ),
+                            DokterSuggestion(doctors: otherDoctors),
+                            SizedBox(
+                              height: 80,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                icon: Icon(Icons.chat, color: lightColor),
-                backgroundColor: orangeColor,
-              ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: FloatingActionButton.extended(
+                      onPressed: () {
+                        redirectTo(context, "/jadwal-konsultasi");
+                      },
+                      label: Text(
+                        'Konsultasi Sekarang',
+                        style: lightTextStyle.copyWith(fontWeight: bold),
+                      ),
+                      icon: Icon(Icons.chat, color: lightColor),
+                      backgroundColor: orangeColor,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
 
 class HeaderCard extends StatelessWidget {
+  final Doctor doctor;
+
+  HeaderCard({required this.doctor});
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -218,13 +240,13 @@ class HeaderCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Dr. Ahmad Hanif',
+                    doctor.name,
                     style: lightTextStyle.copyWith(
                         fontSize: 20, fontWeight: bolder),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    'Dokter Mata',
+                    doctor.specialty,
                     style: secondaryTextStyle.copyWith(
                         fontSize: 16, fontWeight: bold),
                   ),
@@ -528,22 +550,9 @@ class _JadwalDokterSelectorState extends State<JadwalDokterSelector> {
 }
 
 class ReviewPasien extends StatelessWidget {
-  final List<Map<String, dynamic>> reviews = [
-    {
-      'name': 'Sarah Wijaya',
-      'time': '2 hari lalu',
-      'review':
-          'Dr. Hanif sangat sabar dan teliti dalam menjelaskan kondisi mata saya. Saya merasa sangat dipahami dan yakin dengan perawatan yang direkomendasikannya.',
-      'rating': 4.0,
-    },
-    {
-      'name': 'Budi Santoso',
-      'time': '8 hari lalu',
-      'review':
-          'Pelayanan dari Dr. Hanif sangat baik, namun saya berharap waktu tunggu bisa lebih singkat. Tetapi secara keseluruhan, saya puas dengan kualitas perawatannya.',
-      'rating': 4.0,
-    },
-  ];
+  final List<Review> reviews;
+
+  ReviewPasien({required this.reviews});
 
   @override
   Widget build(BuildContext context) {
@@ -583,6 +592,7 @@ class ReviewPasien extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             itemCount: reviews.length,
             itemBuilder: (BuildContext context, int index) {
+              var review = reviews[index];
               return Card(
                 color: inputColor,
                 child: ListTile(
@@ -593,7 +603,7 @@ class ReviewPasien extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        reviews[index]['name'],
+                        review.name,
                         style: TextStyle(
                           color: lightColor,
                         ),
@@ -603,7 +613,7 @@ class ReviewPasien extends StatelessWidget {
                         children: List<Widget>.generate(
                           5,
                           (int starIndex) => Icon(
-                            starIndex < reviews[index]['rating']
+                            starIndex < review.rating
                                 ? Icons.star
                                 : Icons.star_border,
                             color: Colors.amber,
@@ -617,14 +627,14 @@ class ReviewPasien extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        reviews[index]['time'],
+                        review.time,
                         style: TextStyle(
                           color: lightColor,
                         ),
                       ),
                       SizedBox(height: 8),
                       Text(
-                        reviews[index]['review'],
+                        review.review,
                         style: TextStyle(color: lightColor),
                       ),
                     ],
@@ -653,24 +663,9 @@ class ReviewPasien extends StatelessWidget {
 }
 
 class DokterSuggestion extends StatelessWidget {
-  final List<Map<String, dynamic>> dokters = [
-    {
-      'name': 'Dr. Ahmad Sabil',
-      'speciality': 'Dokter THT',
-      'experience': '27 Tahun',
-      'rating': 5,
-      'reviews': 325,
-      'image': 'assets/ijay.png',
-    },
-    {
-      'name': 'Dr. Ahmad Taufik',
-      'speciality': 'Dokter Kandungan',
-      'experience': '12 Tahun',
-      'rating': 4,
-      'reviews': 152,
-      'image': 'assets/hanif.png',
-    },
-  ];
+  final List<Doctor> doctors;
+
+  DokterSuggestion({required this.doctors});
 
   @override
   Widget build(BuildContext context) {
@@ -690,9 +685,9 @@ class DokterSuggestion extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: dokters.length,
+              itemCount: doctors.length,
               itemBuilder: (BuildContext context, int index) {
-                var dokter = dokters[index];
+                var dokter = doctors[index];
                 return Container(
                   width: 320,
                   padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -701,8 +696,8 @@ class DokterSuggestion extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     child: Row(
                       children: [
-                        Image.asset(
-                          dokter['image'],
+                        Image.network(
+                          "assets/hanif.png",
                           fit: BoxFit.cover,
                           width: 120,
                           height: 180,
@@ -714,13 +709,13 @@ class DokterSuggestion extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(dokter['name'],
+                                Text(dokter.name,
                                     style: lightTextStyle.copyWith(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                     )),
                                 Text(
-                                  dokter['speciality'],
+                                  dokter.specialty,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: lightColor,
@@ -730,7 +725,7 @@ class DokterSuggestion extends StatelessWidget {
                                   children: List.generate(
                                     5,
                                     (starIndex) => Icon(
-                                      starIndex < dokter['rating']
+                                      starIndex < 4
                                           ? Icons.star
                                           : Icons.star_border,
                                       size: 20,
@@ -739,7 +734,7 @@ class DokterSuggestion extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${dokter['reviews']} reviews',
+                                  '12 reviews',
                                   style: lightTextStyle.copyWith(
                                     fontSize: 14,
                                     color: lightColor,

@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
             '/sign-up': (context) => NoAuthGuard(child: SignUpPage()),
             '/profile': (context) => AuthGuard(child: ProfilePage()),
             '/cari-dokter': (context) => AuthGuard(child: CariDokterPage()),
-            '/detail-dokter': (context) => AuthGuard(child: DetailDokterPage()),
+            '/detail-dokter': (context) => DetailDokterPage(doctorId: 1),
             '/jadwal-konsultasi': (context) =>
                 AuthGuard(child: JadwalKonsultasiPage()),
             '/pesan': (context) => AuthGuard(child: PesanPage()),
