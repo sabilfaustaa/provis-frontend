@@ -136,7 +136,7 @@ class DoctorProvider with ChangeNotifier {
 
   Future<ConsultationSchedule?> fetchConsultationSchedule(int patientId) async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
+    final token = prefs.getString('access_token');
 
     var url = Uri.parse('http://127.0.0.1:8000/schedule_patient/$patientId');
     var response = await http.get(
