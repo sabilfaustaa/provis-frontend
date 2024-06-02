@@ -170,16 +170,17 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _submitData() async {
     final data = {
-      // 'Nama': _namaController.text,
-      // 'NIK': _nikController.text,
-      // 'Jenis Kelamin': _jenisKelaminController.text,
-      // 'Alamat': _alamatController.text,
-      // 'No. Telepon': _noTeleponController.text,
-      // 'Tanggal Lahir': _tanggalLahirController.text,
-      // 'Penyakit / Alergi': _penyakitAlergiController.text,
-      // 'Tahun': _tahunController.text,
+      'name': _namaController.text,
+      'nik': _nikController.text,
+      'gender': _jenisKelaminController.text,
+      'address': _alamatController.text,
+      'telephone': _noTeleponController.text,
+      'date_of_birth': _tanggalLahirController.text,
+      'allergy': _penyakitAlergiController.text,
+      'allergy_year': _tahunController.text,
       'username': _emailController.text,
-      'password': _passwordController.text
+      'password': _passwordController.text,
+      'medical_record': "tes"
     };
 
     bool isSuccess =
