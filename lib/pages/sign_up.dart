@@ -1,9 +1,9 @@
-import 'package:digisehat/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:digisehat/helpers.dart';
+import 'package:intl/intl.dart';
 import 'package:digisehat/theme.dart';
 import 'package:digisehat/component.dart';
+import 'package:digisehat/providers/auth_provider.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -16,13 +16,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final TextEditingController _namaController = TextEditingController();
   final TextEditingController _nikController = TextEditingController();
-  final TextEditingController _jenisKelaminController = TextEditingController();
+  String? _jenisKelamin;
   final TextEditingController _alamatController = TextEditingController();
   final TextEditingController _noTeleponController = TextEditingController();
   final TextEditingController _tanggalLahirController = TextEditingController();
-  final TextEditingController _penyakitAlergiController =
+  final TextEditingController _riwayatPenyakitController =
       TextEditingController();
-  final TextEditingController _tahunController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -169,31 +168,55 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _submitData() async {
-    final data = {
-      'name': _namaController.text,
-      'nik': _nikController.text,
-      'gender': _jenisKelaminController.text,
-      'address': _alamatController.text,
-      'telephone': _noTeleponController.text,
-      'date_of_birth': _tanggalLahirController.text,
-      'allergy': _penyakitAlergiController.text,
-      'allergy_year': _tahunController.text,
+    final signUpData = {
       'username': _emailController.text,
       'password': _passwordController.text,
-      'medical_record': "tes"
+      'role': 'patient',
     };
 
-    bool isSuccess =
-        await Provider.of<AuthProvider>(context, listen: false).signUp(data);
-    if (isSuccess) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Pendaftaran berhasil!"),
-        backgroundColor: Colors.green,
-      ));
-      Navigator.pushNamed(context, '/sign-in');
+    bool isSignUpSuccess =
+        await Provider.of<AuthProvider>(context, listen: false)
+            .signUp(signUpData);
+
+    if (isSignUpSuccess) {
+      final int userId =
+          Provider.of<AuthProvider>(context, listen: false).userId;
+
+      final createPatientData = {
+        'name': _namaController.text,
+        'user_id': userId,
+        'nik': _nikController.text,
+        'gender': _jenisKelamin,
+        'address': _alamatController.text,
+        'telephone': _noTeleponController.text,
+        'date_of_birth': _tanggalLahirController.text,
+        'allergy': _riwayatPenyakitController.text,
+        'allergy_year': "-",
+        'medical_record': _riwayatPenyakitController.text,
+        'password': _passwordController.text,
+        'bpjs_status': false, // atau sesuai kebutuhan
+      };
+
+      bool isCreatePatientSuccess =
+          await Provider.of<AuthProvider>(context, listen: false)
+              .createPatient(createPatientData);
+
+      if (isCreatePatientSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Pendaftaran berhasil!"),
+          backgroundColor: Colors.green,
+        ));
+        Navigator.pushNamed(context, '/sign-in');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text("Pendaftaran gagal pada tahap create patient, coba lagi."),
+          backgroundColor: Colors.red,
+        ));
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Pendaftaran gagal, coba lagi."),
+        content: Text("Pendaftaran gagal pada tahap signup, coba lagi."),
         backgroundColor: Colors.red,
       ));
     }
@@ -220,13 +243,33 @@ class _SignUpPageState extends State<SignUpPage> {
           backgroundColor: khakiColor,
         ),
         SizedBox(height: 16),
-        buildTextField(
-          controller: _jenisKelaminController,
-          hint: 'Jenis Kelamin',
-          obscureText: false,
-          prefixIcon: Icons.male,
-          iconColor: primaryColor,
-          backgroundColor: khakiColor,
+        Row(
+          children: [
+            Expanded(
+              child: RadioListTile(
+                value: 'Laki-laki',
+                groupValue: _jenisKelamin,
+                onChanged: (value) {
+                  setState(() {
+                    _jenisKelamin = value as String?;
+                  });
+                },
+                title: Text('Laki-laki', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+            Expanded(
+              child: RadioListTile(
+                value: 'Perempuan',
+                groupValue: _jenisKelamin,
+                onChanged: (value) {
+                  setState(() {
+                    _jenisKelamin = value as String?;
+                  });
+                },
+                title: Text('Perempuan', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 16),
         buildTextField(
@@ -236,6 +279,7 @@ class _SignUpPageState extends State<SignUpPage> {
           prefixIcon: Icons.location_city,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
+          maxLines: 4,
         ),
         SizedBox(height: 16),
         buildTextField(
@@ -247,13 +291,32 @@ class _SignUpPageState extends State<SignUpPage> {
           backgroundColor: khakiColor,
         ),
         SizedBox(height: 16),
-        buildTextField(
-          controller: _tanggalLahirController,
-          hint: 'Tanggal Lahir',
-          obscureText: false,
-          prefixIcon: Icons.date_range_rounded,
-          iconColor: primaryColor,
-          backgroundColor: khakiColor,
+        GestureDetector(
+          onTap: () async {
+            DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+            );
+            if (pickedDate != null) {
+              String formattedDate =
+                  DateFormat('yyyy-MM-dd').format(pickedDate);
+              setState(() {
+                _tanggalLahirController.text = formattedDate;
+              });
+            }
+          },
+          child: AbsorbPointer(
+            child: buildTextField(
+              controller: _tanggalLahirController,
+              hint: 'Tanggal Lahir',
+              obscureText: false,
+              prefixIcon: Icons.date_range_rounded,
+              iconColor: primaryColor,
+              backgroundColor: khakiColor,
+            ),
+          ),
         ),
       ],
     );
@@ -263,21 +326,13 @@ class _SignUpPageState extends State<SignUpPage> {
     return Column(
       children: [
         buildTextField(
-          controller: _penyakitAlergiController,
-          hint: 'Penyakit / Alergi',
+          controller: _riwayatPenyakitController,
+          hint: 'Masukan riwayat penyakit/alergi beserta tahun mengalaminya',
           obscureText: false,
           prefixIcon: Icons.healing,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
-        ),
-        SizedBox(height: 16),
-        buildTextField(
-          controller: _tahunController,
-          hint: 'Tahun',
-          obscureText: false,
-          prefixIcon: Icons.calendar_today,
-          iconColor: primaryColor,
-          backgroundColor: khakiColor,
+          maxLines: 6,
         ),
       ],
     );
@@ -288,7 +343,7 @@ class _SignUpPageState extends State<SignUpPage> {
       children: [
         buildTextField(
           controller: _emailController,
-          hint: 'username',
+          hint: 'Email',
           obscureText: false,
           prefixIcon: Icons.email,
           iconColor: primaryColor,
@@ -297,7 +352,7 @@ class _SignUpPageState extends State<SignUpPage> {
         SizedBox(height: 16),
         buildTextField(
           controller: _passwordController,
-          hint: 'password',
+          hint: 'Password',
           obscureText: true,
           prefixIcon: Icons.lock,
           iconColor: primaryColor,

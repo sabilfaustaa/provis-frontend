@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:digisehat/theme.dart';
+import 'package:intl/date_symbols.dart';
 
 Widget buildBackground(BoxDecoration boxDecoration) {
   return Container(
@@ -11,29 +12,34 @@ Widget buildTextField({
   TextEditingController? controller,
   required String hint,
   required bool obscureText,
-  required IconData prefixIcon,
+  IconData? prefixIcon,
   Color backgroundColor = Colors.white,
   Color iconColor = Colors.black,
   double fieldHeight = 48.0,
+  int maxLines = 1,
 }) {
   return TextField(
     controller: controller,
     obscureText: obscureText,
+    maxLines: maxLines,
+    textAlignVertical: TextAlignVertical.center,
     decoration: InputDecoration(
       hintText: hint,
       fillColor: backgroundColor,
       filled: true,
-      prefixIcon: IconTheme(
-        data: IconThemeData(
-          color: iconColor,
-        ),
-        child: Icon(prefixIcon),
-      ),
+      prefixIcon: prefixIcon != null
+          ? IconTheme(
+              data: IconThemeData(
+                color: iconColor,
+              ),
+              child: Icon(prefixIcon),
+            )
+          : null,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       contentPadding: EdgeInsets.symmetric(
-        vertical: (fieldHeight - 48.0) / 2,
+        vertical: (fieldHeight - 24.0) / 2,
         horizontal: 12,
       ),
     ),

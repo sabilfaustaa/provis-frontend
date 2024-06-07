@@ -86,7 +86,8 @@ class JadwalKonsultasiPage extends StatelessWidget {
                               ),
                               SizedBox(height: 16),
                               Text(
-                                schedule.patient.name,
+                                "Test",
+                                // schedule.patient.name,
                                 style: TextStyle(
                                   color: lightColor,
                                   fontSize: 20,

@@ -103,46 +103,49 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: darkPrimaryColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Row(
-          children: [
-            Container(
-              width: 32.0,
-              height: 32.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(4.0),
-                image: DecorationImage(
-                  image: AssetImage('profile-home.png'),
-                  fit: BoxFit.cover,
+        title: Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Row(
+              children: [
+                Container(
+                  width: 32.0,
+                  height: 32.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(4.0),
+                    image: DecorationImage(
+                      image: AssetImage('profile-home.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(width: 6),
-            DropdownButton(
-              items: [
-                DropdownMenuItem(
-                  value: "profile",
-                  child: Text("Profil"),
-                  onTap: () {
-                    redirectTo(context, "/profile");
-                  },
-                ),
-                DropdownMenuItem(
-                  value: "change_password",
-                  child: Text("Ubah Password"),
-                  onTap: () {
-                    redirectTo(context, "/ubah-password");
-                  },
+                SizedBox(width: 6),
+                DropdownButton(
+                  items: [
+                    DropdownMenuItem(
+                      value: "profile",
+                      child: Text("Profil"),
+                      onTap: () {
+                        redirectTo(context, "/profile");
+                      },
+                    ),
+                    DropdownMenuItem(
+                      value: "change_password",
+                      child: Text("Ubah Password"),
+                      onTap: () {
+                        redirectTo(context, "/ubah-password");
+                      },
+                    ),
+                  ],
+                  onChanged: (value) {},
+                  hint: Text("Hai, Defrizal", style: lightTextStyle),
+                  underline: Container(),
                 ),
               ],
-              onChanged: (value) {},
-              hint: Text("Hai, Defrizal", style: lightTextStyle),
-              underline: Container(),
-            ),
-          ],
-        ),
+            )),
         actions: [
           IconButton(
             icon: Icon(Icons.phone, color: secondaryColor),
@@ -150,6 +153,7 @@ class _HomePageState extends State<HomePage> {
           ),
           IconButton(
             icon: Icon(Icons.notification_important, color: alertColor),
+            padding: EdgeInsets.only(right: 20),
             onPressed: () {},
           ),
         ],
@@ -157,40 +161,40 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Cari apa yang kamu butuhkan....',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        filled: true,
-                        fillColor: khakiColor,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: alertColor,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.search, color: lightColor),
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding:
+            //       const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //         child: TextField(
+            //           decoration: InputDecoration(
+            //             hintText: 'Cari apa yang kamu butuhkan....',
+            //             contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+            //             border: OutlineInputBorder(
+            //               borderRadius: BorderRadius.circular(10.0),
+            //             ),
+            //             filled: true,
+            //             fillColor: khakiColor,
+            //           ),
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 10,
+            //       ),
+            //       Container(
+            //         decoration: BoxDecoration(
+            //           color: alertColor,
+            //           borderRadius: BorderRadius.circular(10.0),
+            //         ),
+            //         child: IconButton(
+            //           icon: Icon(Icons.search, color: lightColor),
+            //           onPressed: () {},
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: 16),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: defaultMarginHome),
