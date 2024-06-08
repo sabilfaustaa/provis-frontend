@@ -3,18 +3,34 @@ import 'package:provider/provider.dart';
 import 'package:digisehat/theme.dart';
 import 'package:digisehat/component.dart';
 import 'package:digisehat/helpers.dart';
-import 'package:digisehat/providers/doctor_provider.dart';
-import 'package:digisehat/providers/auth_provider.dart';
+import 'package:digisehat/providers/konsultasi_provider.dart';
 import 'package:digisehat/models/consultation_schedule.dart';
 
-class JadwalKonsultasiPage extends StatelessWidget {
+class JadwalKonsultasiPage extends StatefulWidget {
+  final int scheduleId;
+
+  JadwalKonsultasiPage({required this.scheduleId});
+
+  @override
+  _JadwalKonsultasiPageState createState() => _JadwalKonsultasiPageState();
+}
+
+class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
+  Future<ConsultationSchedule?>? _futureSchedule;
+
+  @override
+  void initState() {
+    super.initState();
+    final konsultasiProvider =
+        Provider.of<KonsultasiProvider>(context, listen: false);
+    _futureSchedule =
+        konsultasiProvider.fetchConsultationScheduleById(widget.scheduleId);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final doctorProvider = Provider.of<DoctorProvider>(context);
-
     return FutureBuilder<ConsultationSchedule?>(
-      future: doctorProvider.fetchConsultationSchedule(authProvider.user!.id),
+      future: _futureSchedule,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -86,8 +102,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                               ),
                               SizedBox(height: 16),
                               Text(
-                                "Test",
-                                // schedule.patient.name,
+                                schedule.patient?.patient?.name ?? 'No name',
                                 style: TextStyle(
                                   color: lightColor,
                                   fontSize: 20,
@@ -96,8 +111,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                '24 Tahun | 167 cm | 50 Kg',
-                                // '${schedule.patient.age} Tahun | ${schedule.patient.height} cm | ${schedule.patient.weight} Kg',
+                                '${schedule.patient?.patient?.dateOfBirth ?? 'N/A'} Tahun | ${schedule.patient?.patient?.dateOfBirth ?? 'N/A'} cm | ${schedule.patient?.patient?.dateOfBirth ?? 'N/A'} Kg',
                                 style: TextStyle(
                                   color: lightColor,
                                   fontSize: 16,
@@ -139,7 +153,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                                           vertical: 20.0, horizontal: 20),
                                       child: Center(
                                         child: Text(
-                                          schedule.reservationNum,
+                                          schedule.reservationNum ?? 'N/A',
                                           style: TextStyle(
                                               fontSize: 58,
                                               fontWeight: FontWeight.bold,
@@ -183,14 +197,16 @@ class JadwalKonsultasiPage extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            schedule.time,
+                                            schedule.timeStart +
+                                                '-' +
+                                                schedule.timeEnd,
                                             style: TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white),
                                           ),
                                           Text(
-                                            schedule.location,
+                                            schedule.location ?? 'N/A',
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.white),
@@ -260,7 +276,8 @@ class JadwalKonsultasiPage extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  schedule.doctor.name,
+                                                  schedule.doctor?.name ??
+                                                      'N/A',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 24,
@@ -282,14 +299,14 @@ class JadwalKonsultasiPage extends StatelessWidget {
                                                 ),
                                                 SizedBox(height: 4),
                                                 Text(
-                                                  '70 tahun ++ Pengalaman',
+                                                  '${schedule.doctor?.experience ?? 'N/A'} tahun ++ Pengalaman',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
                                                   ),
                                                 ),
                                                 Text(
-                                                  '275 orang Pasien',
+                                                  '${schedule.doctor?.name ?? 'N/A'} orang Pasien',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
@@ -378,7 +395,7 @@ class JadwalKonsultasiPage extends StatelessWidget {
                                         color: inputColor,
                                       ),
                                       child: buildButton(context,
-                                          "Mulai chat dengan Dr. Ahmad Hanif",
+                                          "Mulai chat dengan ${schedule.doctor?.name}",
                                           () {
                                         redirectTo(context, "/pesan");
                                       }, orangeColor, lightColor),

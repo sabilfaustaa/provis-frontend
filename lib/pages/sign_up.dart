@@ -171,7 +171,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final signUpData = {
       'username': _emailController.text,
       'password': _passwordController.text,
-      'role': 'patient',
+      'role': 'Pasien',
     };
 
     bool isSignUpSuccess =

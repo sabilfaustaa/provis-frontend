@@ -12,7 +12,8 @@ class CariDokterPage extends StatefulWidget {
 
 class _CariDokterPageState extends State<CariDokterPage> {
   int _selectedIndex = 0;
-  TextEditingController _searchController = TextEditingController();
+  TextEditingController _searchNameController = TextEditingController();
+  TextEditingController _searchSpecialtyController = TextEditingController();
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -25,14 +26,14 @@ class _CariDokterPageState extends State<CariDokterPage> {
   void _loadInitialDoctors() {
     final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
     doctorProvider.reset();
-    doctorProvider.fetchDoctors('', reset: true);
+    doctorProvider.fetchDoctorsByName('', reset: true);
   }
 
   void _scrollListener() {
     final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      doctorProvider.fetchDoctors(_searchController.text);
+      doctorProvider.fetchDoctorsByName(_searchNameController.text);
     }
   }
 
@@ -45,7 +46,8 @@ class _CariDokterPageState extends State<CariDokterPage> {
   @override
   void dispose() {
     _scrollController.dispose();
-    _searchController.dispose();
+    _searchNameController.dispose();
+    _searchSpecialtyController.dispose();
     super.dispose();
   }
 
@@ -146,70 +148,99 @@ class _CariDokterPageState extends State<CariDokterPage> {
                       ),
                       Padding(
                         padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                        child: Row(
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        child: Column(
                           children: [
-                            Expanded(
-                              child: TextField(
-                                controller: _searchController,
-                                decoration: InputDecoration(
-                                  hintText: 'Cari apa yang kamu butuhkan....',
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 10.0),
-                                  border: OutlineInputBorder(
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: _searchNameController,
+                                    decoration: InputDecoration(
+                                      hintText: 'Cari berdasarkan nama...',
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: khakiColor,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: alertColor,
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  filled: true,
-                                  fillColor: khakiColor,
+                                  child: IconButton(
+                                    icon: Icon(Icons.search, color: lightColor),
+                                    onPressed: () {
+                                      final doctorProvider =
+                                          Provider.of<DoctorProvider>(context,
+                                              listen: false);
+                                      doctorProvider.fetchDoctorsByName(
+                                          _searchNameController.text,
+                                          reset: true);
+                                    },
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: alertColor,
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: IconButton(
-                                icon: Icon(Icons.search, color: lightColor),
-                                onPressed: () {
-                                  final doctorProvider =
-                                      Provider.of<DoctorProvider>(context,
-                                          listen: false);
-                                  doctorProvider.fetchDoctors(
-                                      _searchController.text,
-                                      reset: true);
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Dokter Teratas',
-                              style: TextStyle(
-                                  color: lightColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Lihat Semuanya',
-                                style: TextStyle(color: lightColor),
-                              ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: _searchSpecialtyController,
+                                    decoration: InputDecoration(
+                                      hintText:
+                                          'Cari berdasarkan spesialisasi...',
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: khakiColor,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: alertColor,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: IconButton(
+                                    icon: Icon(Icons.search, color: lightColor),
+                                    onPressed: () {
+                                      final doctorProvider =
+                                          Provider.of<DoctorProvider>(context,
+                                              listen: false);
+                                      doctorProvider.fetchDoctorsBySpecialty(
+                                          _searchSpecialtyController.text,
+                                          reset: true);
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
                       Consumer<DoctorProvider>(
                         builder: (context, doctorProvider, child) {
+                          if (doctorProvider.isLoading) {
+                            return Center(child: CircularProgressIndicator());
+                          }
                           return Column(
                             children: doctorProvider.doctors.map((doctor) {
                               return InkWell(
