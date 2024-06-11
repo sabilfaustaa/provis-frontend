@@ -151,6 +151,22 @@ class _SignUpPageState extends State<SignUpPage> {
     ];
   }
 
+  int calculateAge(String birthDateString) {
+    try {
+      DateTime birthDate = DateFormat('yyyy-MM-dd').parse(birthDateString);
+      DateTime today = DateTime.now();
+      int age = today.year - birthDate.year;
+      if (today.month < birthDate.month ||
+          (today.month == birthDate.month && today.day < birthDate.day)) {
+        age--;
+      }
+      return age;
+    } catch (e) {
+      print("Error calculating age: $e");
+      return 0;
+    }
+  }
+
   void _nextStep() {
     if (_currentStep < 2) {
       setState(() => _currentStep++);
@@ -186,6 +202,9 @@ class _SignUpPageState extends State<SignUpPage> {
       final int userId =
           Provider.of<AuthProvider>(context, listen: false).userId;
 
+      int calculatedAge = calculateAge(_tanggalLahirController.text);
+      print("Calculated Age: $calculatedAge");
+
       final createPatientData = {
         'name': _namaController.text,
         'user_id': userId,
@@ -201,7 +220,7 @@ class _SignUpPageState extends State<SignUpPage> {
         'weight': _heightController.text,
         'height': _weightController.text,
         'bmi': _bmiController.text,
-        'age': "22",
+        'age': calculatedAge.toString(),
         'bpjs_status': false,
       };
 
@@ -237,7 +256,7 @@ class _SignUpPageState extends State<SignUpPage> {
           controller: _namaController,
           hint: 'Nama',
           obscureText: false,
-          prefixIcon: Icons.person,
+          prefixIcon: null,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
         ),
@@ -246,7 +265,7 @@ class _SignUpPageState extends State<SignUpPage> {
           controller: _nikController,
           hint: 'NIK',
           obscureText: false,
-          prefixIcon: Icons.perm_identity,
+          prefixIcon: null,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
         ),
@@ -284,7 +303,7 @@ class _SignUpPageState extends State<SignUpPage> {
           controller: _alamatController,
           hint: 'Alamat',
           obscureText: false,
-          prefixIcon: Icons.location_city,
+          prefixIcon: null,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
           maxLines: 4,
@@ -294,7 +313,7 @@ class _SignUpPageState extends State<SignUpPage> {
           controller: _noTeleponController,
           hint: 'No. Telepon',
           obscureText: false,
-          prefixIcon: Icons.phone,
+          prefixIcon: null,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
         ),
@@ -320,7 +339,7 @@ class _SignUpPageState extends State<SignUpPage> {
               controller: _tanggalLahirController,
               hint: 'Tanggal Lahir',
               obscureText: false,
-              prefixIcon: Icons.date_range_rounded,
+              prefixIcon: null,
               iconColor: primaryColor,
               backgroundColor: khakiColor,
             ),
@@ -340,7 +359,10 @@ class _SignUpPageState extends State<SignUpPage> {
           prefixIcon: null,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
-          maxLines: 6,
+          maxLines: 4,
+        ),
+        SizedBox(
+          height: 16,
         ),
         buildTextField(
           controller: _weightController,
@@ -349,7 +371,10 @@ class _SignUpPageState extends State<SignUpPage> {
           prefixIcon: null,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
-          maxLines: 6,
+          maxLines: 1,
+        ),
+        SizedBox(
+          height: 16,
         ),
         buildTextField(
           controller: _heightController,
@@ -358,7 +383,10 @@ class _SignUpPageState extends State<SignUpPage> {
           prefixIcon: null,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
-          maxLines: 6,
+          maxLines: 1,
+        ),
+        SizedBox(
+          height: 16,
         ),
         buildTextField(
           controller: _bmiController,
@@ -367,7 +395,7 @@ class _SignUpPageState extends State<SignUpPage> {
           prefixIcon: null,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
-          maxLines: 6,
+          maxLines: 1,
         ),
       ],
     );

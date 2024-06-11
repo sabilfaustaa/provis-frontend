@@ -113,7 +113,7 @@ class DoctorProvider with ChangeNotifier {
       String? token = prefs.getString('auth_token');
 
       var url = Uri.parse(
-          'http://127.0.0.1:8000/doctors/searchName?name=$name&skip=$_skip&limit=$_limit');
+          'http://127.0.0.1:8000/doctors/search?search_term=$name&skip=$_skip&limit=$_limit');
       var response = await http.get(
         url,
         headers: {
@@ -218,17 +218,19 @@ class DoctorProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> createSchedule(
-      int doctorId,
-      String date,
-      String time,
-      String location,
-      int patientId,
-      String reservationNum,
-      String timestart,
-      String timeend,
-      String status,
-      bool bpjs) async {
+  Future<int?> createSchedule(
+    int doctorId,
+    String date,
+    String time,
+    String location,
+    int patientId,
+    String reservationNum,
+    String timestart,
+    String timeend,
+    String status,
+    bool bpjs,
+    String? doctorName,
+  ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('auth_token');
 
@@ -249,10 +251,16 @@ class DoctorProvider with ChangeNotifier {
         'timeend': timeend,
         'status': status,
         'bpjs': bpjs,
+        'doctor_name': doctorName,
       }),
     );
 
-    return response.statusCode == 200;
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['id'];
+    } else {
+      return null;
+    }
   }
 
   Future<ConsultationSchedule?> fetchConsultationSchedule(int patientId) async {

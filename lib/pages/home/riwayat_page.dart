@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:digisehat/navigation_bar.dart';
 import 'package:digisehat/theme.dart';
-// import 'package:digisehat/component.dart';
-// import 'package:digisehat/helpers.dart';
 
 class RiwayatPage extends StatefulWidget {
   const RiwayatPage({super.key});
@@ -35,7 +33,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
     }
 
     final response = await http.get(
-      Uri.parse('http://127.0.0.1:8000/schedules?patient_id=$userId'),
+      Uri.parse('http://127.0.0.1:8000/schedule_patient/$userId'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -195,52 +193,56 @@ class ConsultationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       color: primaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
       elevation: 5,
-      child: Row(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15.0),
-              bottomLeft: Radius.circular(15.0),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: <Widget>[
+            // ClipRRect(
+            //   borderRadius: BorderRadius.only(
+            //     topLeft: Radius.circular(15.0),
+            //     bottomLeft: Radius.circular(15.0),
+            //   ),
+            //   child: Image.network(
+            //     consultation['image_url'] ?? 'assets/dummy-artikel.png',
+            //     height: 130,
+            //     width: 100,
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
+            SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    consultation['doctor_name'] ?? 'Unknown Doctor',
+                    style: lightTextStyle.copyWith(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Tanggal: ${consultation['date'] ?? 'N/A'}',
+                    style: lightTextStyle,
+                  ),
+                  Text(
+                    'Waktu: ${consultation['timestart']} - ${consultation['timeend']}',
+                    style: lightTextStyle,
+                  ),
+                  Text(
+                    'Lokasi: ${consultation['location'] ?? 'N/A'}',
+                    style: lightTextStyle,
+                  ),
+                ],
+              ),
             ),
-            child: Image.network(
-              consultation['image_url'] ?? 'assets/dummy-artikel.png',
-              height: 130,
-              width: 140,
-              fit: BoxFit.cover,
-            ),
-          ),
-          SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  consultation['doctor_name'] ?? 'Unknown Doctor',
-                  style: lightTextStyle.copyWith(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'Tanggal: ${consultation['date'] ?? 'N/A'}',
-                  style: lightTextStyle,
-                ),
-                Text(
-                  'Waktu: ${consultation['timestart'] + ' - ' + consultation['timeend']}',
-                  style: lightTextStyle,
-                ),
-                Text(
-                  'Lokasi: ${consultation['location'] ?? 'N/A'}',
-                  style: lightTextStyle,
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -254,52 +256,57 @@ class TransactionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       color: primaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
       elevation: 5,
-      child: Row(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15.0),
-              bottomLeft: Radius.circular(15.0),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15.0),
+                bottomLeft: Radius.circular(15.0),
+              ),
+              child: Image.network(
+                transaction['image_url'] ?? 'assets/dummy-artikel.png',
+                height: 130,
+                width: 100,
+                fit: BoxFit.cover,
+              ),
             ),
-            child: Image.network(
-              transaction['image_url'] ?? 'assets/dummy-artikel.png',
-              height: 130,
-              width: 140,
-              fit: BoxFit.cover,
+            SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    transaction['payment'] ?? 'Unknown Payment',
+                    style: lightTextStyle.copyWith(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Rp ${transaction['price'] ?? 'N/A'}',
+                    style:
+                        lightTextStyle.copyWith(fontWeight: FontWeight.normal),
+                  ),
+                  Text(
+                    transaction['courier'] ?? 'Unknown Courier',
+                    style: lightTextStyle,
+                  ),
+                  Text(
+                    'Delivered to: ${transaction['address'] ?? 'N/A'}',
+                    style: lightTextStyle,
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  transaction['payment'] ?? 'Unknown Payment',
-                  style: lightTextStyle.copyWith(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'Rp ${transaction['price'] ?? 'N/A'}',
-                  style: lightTextStyle.copyWith(fontWeight: FontWeight.normal),
-                ),
-                Text(
-                  transaction['courier'] ?? 'Unknown Courier',
-                  style: lightTextStyle,
-                ),
-                Text(
-                  'Delivered to: ${transaction['address'] ?? 'N/A'}',
-                  style: lightTextStyle,
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

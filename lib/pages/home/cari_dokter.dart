@@ -151,87 +151,106 @@ class _CariDokterPageState extends State<CariDokterPage> {
                             EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         child: Column(
                           children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    controller: _searchNameController,
-                                    decoration: InputDecoration(
-                                      hintText: 'Cari berdasarkan nama...',
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 10.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextField(
+                                          controller: _searchNameController,
+                                          decoration: InputDecoration(
+                                            hintText:
+                                                'Cari berdasarkan nama atau spesialisasi...',
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 10.0),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            filled: true,
+                                            fillColor: khakiColor,
+                                          ),
+                                        ),
                                       ),
-                                      filled: true,
-                                      fillColor: khakiColor,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: alertColor,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: IconButton(
-                                    icon: Icon(Icons.search, color: lightColor),
-                                    onPressed: () {
-                                      final doctorProvider =
-                                          Provider.of<DoctorProvider>(context,
-                                              listen: false);
-                                      doctorProvider.fetchDoctorsByName(
-                                          _searchNameController.text,
-                                          reset: true);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    controller: _searchSpecialtyController,
-                                    decoration: InputDecoration(
-                                      hintText:
-                                          'Cari berdasarkan spesialisasi...',
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 10.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
+                                      SizedBox(
+                                        width: 10,
                                       ),
-                                      filled: true,
-                                      fillColor: khakiColor,
-                                    ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: alertColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: IconButton(
+                                          icon: Icon(Icons.search,
+                                              color: lightColor),
+                                          onPressed: () {
+                                            final doctorProvider =
+                                                Provider.of<DoctorProvider>(
+                                                    context,
+                                                    listen: false);
+                                            doctorProvider.fetchDoctorsByName(
+                                                _searchNameController.text,
+                                                reset: true);
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: alertColor,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: IconButton(
-                                    icon: Icon(Icons.search, color: lightColor),
-                                    onPressed: () {
-                                      final doctorProvider =
-                                          Provider.of<DoctorProvider>(context,
-                                              listen: false);
-                                      doctorProvider.fetchDoctorsBySpecialty(
-                                          _searchSpecialtyController.text,
-                                          reset: true);
-                                    },
-                                  ),
-                                ),
-                              ],
+                                  // SizedBox(height: 10),
+                                  // Row(
+                                  //   children: [
+                                  //     Expanded(
+                                  //       child: TextField(
+                                  //         controller:
+                                  //             _searchSpecialtyController,
+                                  //         decoration: InputDecoration(
+                                  //           hintText:
+                                  //               'Cari berdasarkan spesialisasi...',
+                                  //           contentPadding:
+                                  //               EdgeInsets.symmetric(
+                                  //                   horizontal: 10.0),
+                                  //           border: OutlineInputBorder(
+                                  //             borderRadius:
+                                  //                 BorderRadius.circular(10.0),
+                                  //           ),
+                                  //           filled: true,
+                                  //           fillColor: khakiColor,
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //     SizedBox(
+                                  //       width: 10,
+                                  //     ),
+                                  //     Container(
+                                  //       decoration: BoxDecoration(
+                                  //         color: alertColor,
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(10.0),
+                                  //       ),
+                                  //       child: IconButton(
+                                  //         icon: Icon(Icons.search,
+                                  //             color: lightColor),
+                                  //         onPressed: () {
+                                  //           final doctorProvider =
+                                  //               Provider.of<DoctorProvider>(
+                                  //                   context,
+                                  //                   listen: false);
+                                  //           doctorProvider
+                                  //               .fetchDoctorsBySpecialty(
+                                  //                   _searchSpecialtyController
+                                  //                       .text,
+                                  //                   reset: true);
+                                  //         },
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -245,7 +264,12 @@ class _CariDokterPageState extends State<CariDokterPage> {
                             children: doctorProvider.doctors.map((doctor) {
                               return InkWell(
                                 onTap: () {
-                                  redirectTo(context, "/detail-dokter");
+                                  // redirectTo(context, "/detail-dokter");
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/detail-dokter',
+                                    arguments: doctor.id,
+                                  );
                                 },
                                 child: ListTile(
                                   title: Text(

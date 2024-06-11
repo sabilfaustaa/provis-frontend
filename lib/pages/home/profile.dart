@@ -5,6 +5,7 @@ import 'package:digisehat/component.dart';
 // import 'package:digisehat/helpers.dart';
 import 'package:provider/provider.dart';
 import 'package:digisehat/providers/auth_provider.dart';
+import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -52,6 +53,22 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  int calculateAge(String birthDateString) {
+    try {
+      DateTime birthDate = DateFormat('yyyy-MM-dd').parse(birthDateString);
+      DateTime today = DateTime.now();
+      int age = today.year - birthDate.year;
+      if (today.month < birthDate.month ||
+          (today.month == birthDate.month && today.day < birthDate.day)) {
+        age--;
+      }
+      return age;
+    } catch (e) {
+      print("Error calculating age: $e");
+      return 0;
+    }
+  }
+
   void _toggleEdit() {
     setState(() {
       _isEditing = !_isEditing;
@@ -62,6 +79,9 @@ class _ProfilePageState extends State<ProfilePage> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     try {
+      int calculatedAge = calculateAge(_dobController.text);
+      print("Calculated Age: $calculatedAge");
+
       var data = {
         'nik': _nikController.text,
         'name': _nameController.text,
@@ -74,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
         'weight': int.parse(_weightController.text),
         'medical_record': _medicalHistoryController.text,
         'telephone': _phoneController.text,
-        'age': "80",
+        'age': calculatedAge.toString(),
       };
 
       bool success = await authProvider.updateUserProfile(data);

@@ -45,19 +45,27 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           routes: {
+            // done consume :
             '/': (context) => SplashPage(),
             '/home': (context) => AuthGuard(child: HomePage()),
             '/sign-in': (context) => NoAuthGuard(child: SignInPage()),
-            '/forgot-password': (context) =>
-                NoAuthGuard(child: ForgotPasswordPage()),
             '/sign-up': (context) => NoAuthGuard(child: SignUpPage()),
             '/profile': (context) => AuthGuard(child: ProfilePage()),
             '/cari-dokter': (context) => AuthGuard(child: CariDokterPage()),
-            '/detail-dokter': (context) => DetailDokterPage(doctorId: 1),
+            '/detail-dokter': (context) => AuthGuard(
+                  child: DetailDokterPage(
+                    doctorId: ModalRoute.of(context)!.settings.arguments as int,
+                  ),
+                ),
             '/jadwal-konsultasi': (context) => AuthGuard(
-                    child: JadwalKonsultasiPage(
-                  scheduleId: 1,
-                )),
+                  child: JadwalKonsultasiPage(
+                    scheduleId:
+                        ModalRoute.of(context)!.settings.arguments as int,
+                  ),
+                ),
+
+            '/forgot-password': (context) =>
+                NoAuthGuard(child: ForgotPasswordPage()),
             '/pesan': (context) => AuthGuard(child: PesanPage()),
             '/list-pesan': (context) => AuthGuard(child: ListPesanPage()),
             '/input-diagnosa-pasien': (context) =>

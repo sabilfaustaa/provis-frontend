@@ -66,20 +66,33 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
       String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
       var authProvider = Provider.of<AuthProvider>(context, listen: false);
       var doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
-      bool success = await doctorProvider.createSchedule(
-        doctorProvider.doctor!.id,
-        formattedDate,
-        _selectedTime!,
-        doctorProvider.doctor!.hospital.toString(),
-        authProvider.user!.id,
-        generateReservationNum(),
-        '08:30', // Example start time
-        '09:00', // Example end time
-        'confirmed', // Example status
-        false, // Example BPJS
-      );
-      if (success) {
-        Navigator.pushNamed(context, '/jadwal-konsultasi');
+
+      // Split selectedTime into start and end times
+      List<String> timeRange = _selectedTime!.split(' - ');
+      String startTime = timeRange[0];
+      String endTime = timeRange[1];
+
+      int? id = await doctorProvider.createSchedule(
+          doctorProvider.doctor!.id,
+          formattedDate,
+          _selectedTime!,
+          doctorProvider.doctor!.hospital.toString(),
+          authProvider.user!.id,
+          generateReservationNum(),
+          startTime,
+          endTime,
+          'confirmed',
+          false,
+          doctorProvider.doctor!.name);
+
+      print(id);
+
+      if (id != null) {
+        Navigator.pushNamed(
+          context,
+          '/jadwal-konsultasi',
+          arguments: id,
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal membuat jadwal konsultasi')),
@@ -106,7 +119,22 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
   Widget build(BuildContext context) {
     final doctorProvider = Provider.of<DoctorProvider>(context);
     final doctor = doctorProvider.doctor;
-    final reviews = doctorProvider.reviews;
+    final reviews = doctorProvider.reviews.isNotEmpty
+        ? doctorProvider.reviews
+        : [
+            Review(
+                id: 1,
+                name: "John Doe",
+                review: "Great doctor, very helpful!",
+                rating: 5,
+                time: "2 days ago"),
+            Review(
+                id: 2,
+                name: "Jane Doe",
+                review: "Very knowledgeable and kind.",
+                rating: 4,
+                time: "1 week ago")
+          ];
     final otherDoctors = doctorProvider.doctors;
 
     return Scaffold(
