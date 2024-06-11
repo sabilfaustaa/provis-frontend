@@ -21,6 +21,7 @@ import 'package:digisehat/pages/home/detail_dokter.dart';
 import 'package:digisehat/pages/home/panduan_aplikasi.dart';
 import 'package:digisehat/pages/home/panduan_obat.dart';
 import 'package:digisehat/pages/home/panduan_fitur.dart';
+import 'package:digisehat/pages/home/rumah_sakit.dart';
 
 // provider
 import 'package:provider/provider.dart';
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
             '/panduan-fitur': (context) => AuthGuard(child: PanduanFiturPage()),
             '/obat-pasien': (context) => AuthGuard(child: ObatPasienPage()),
             '/notifikasi': (context) => AuthGuard(child: NotifikasiPage()),
+            '/rumah-sakit': (context) => AuthGuard(child: RumahSakitPage()),
           },
         ));
   }
