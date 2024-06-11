@@ -56,12 +56,12 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            IconButton(
-                              icon: Icon(Icons.arrow_back, color: lightColor),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
+                            // IconButton(
+                            //   icon: Icon(Icons.arrow_back, color: lightColor),
+                            //   onPressed: () {
+                            //     Navigator.of(context).pop();
+                            //   },
+                            // ),
                             Text(
                               'Jadwal Konsultasi',
                               style: lightTextStyle.copyWith(
