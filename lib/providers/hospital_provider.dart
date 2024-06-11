@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -46,11 +47,17 @@ class HospitalProvider with ChangeNotifier {
         _hospitals.addAll(newHospitals);
         _skip += _limit;
       } else {
-        print('Failed to load hospitals: ${response.statusCode}');
-        print('Response body: ${response.body}');
+        if (kDebugMode) {
+          print('Failed to load hospitals: ${response.statusCode}');
+        }
+        if (kDebugMode) {
+          print('Response body: ${response.body}');
+        }
       }
     } catch (e) {
-      print('Error fetching hospitals: $e');
+      if (kDebugMode) {
+        print('Error fetching hospitals: $e');
+      }
     } finally {
       _isLoading = false;
       notifyListeners();

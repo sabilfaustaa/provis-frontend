@@ -8,6 +8,7 @@ import 'package:digisehat/pages/home/obat_pasien.dart';
 import 'package:digisehat/pages/home/pesan.dart';
 import 'package:digisehat/pages/home/riwayat_page.dart';
 import 'package:digisehat/providers/doctor_provider.dart';
+import 'package:digisehat/providers/hospital_provider.dart';
 import 'package:digisehat/providers/konsultasi_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:digisehat/pages/sign_in.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (_) => AuthProvider()),
           ChangeNotifierProvider(create: (_) => DoctorProvider()),
+          ChangeNotifierProvider(create: (_) => HospitalProvider()),
           ChangeNotifierProvider(create: (_) => KonsultasiProvider()),
         ],
         child: MaterialApp(

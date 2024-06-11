@@ -1,7 +1,7 @@
 import 'package:digisehat/helpers.dart';
 import 'package:digisehat/theme.dart';
 import 'package:digisehat/navigation_bar.dart';
-import 'package:digisehat/providers/doctor_provider.dart';
+import 'package:digisehat/providers/hospital_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,27 +16,25 @@ class RumahSakitPage extends StatefulWidget {
 class _RumahSakitPageState extends State<RumahSakitPage> {
   int _selectedIndex = 0;
   final TextEditingController _searchNameController = TextEditingController();
-  final TextEditingController _searchSpecialtyController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _loadInitialDoctors();
+    _loadInitialHospitals();
     _scrollController.addListener(_scrollListener);
   }
 
-  void _loadInitialDoctors() {
-    final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
-    doctorProvider.reset();
-    doctorProvider.fetchHospitalByName('', reset: true);
+  void _loadInitialHospitals() {
+    final hospitalProvider = Provider.of<HospitalProvider>(context, listen: false);
+    hospitalProvider.reset();
+    hospitalProvider.fetchHospitals(reset: true);
   }
 
   void _scrollListener() {
-    final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      doctorProvider.fetchHospitalByName(_searchNameController.text);
+    final hospitalProvider = Provider.of<HospitalProvider>(context, listen: false);
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      hospitalProvider.fetchHospitals();
     }
   }
 
@@ -50,7 +48,6 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
   void dispose() {
     _scrollController.dispose();
     _searchNameController.dispose();
-    _searchSpecialtyController.dispose();
     super.dispose();
   }
 
@@ -94,11 +91,11 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
                       ],
                     ),
                   ),
-                  Image.network(
-                    "assets/rumah_sakit_image.png",
+                  Image.asset(
+                    'assets/rumah_sakit_image.png',
                     width: double.infinity,
                     fit: BoxFit.contain,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -150,8 +147,7 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
                         ],
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         child: Column(
                           children: [
                             Container(
@@ -164,14 +160,11 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
                                         child: TextField(
                                           controller: _searchNameController,
                                           decoration: InputDecoration(
-                                            hintText:
-                                                'Cari berdasarkan nama...',
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    horizontal: 10.0),
+                                            hintText: 'Cari berdasarkan nama...',
+                                            contentPadding: EdgeInsets.symmetric(
+                                                horizontal: 10.0),
                                             border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
+                                              borderRadius: BorderRadius.circular(10.0),
                                             ),
                                             filled: true,
                                             fillColor: khakiColor,
@@ -184,119 +177,86 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
                                       Container(
                                         decoration: BoxDecoration(
                                           color: alertColor,
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                          borderRadius: BorderRadius.circular(10.0),
                                         ),
                                         child: IconButton(
-                                          icon: Icon(Icons.search,
-                                              color: lightColor),
+                                          icon: Icon(Icons.search, color: lightColor),
                                           onPressed: () {
-                                            final doctorProvider =
-                                                Provider.of<DoctorProvider>(
-                                                    context,
-                                                    listen: false);
-                                            doctorProvider.fetchHospitalByName(
-                                                _searchNameController.text,
+                                            final hospitalProvider = Provider.of<HospitalProvider>(context, listen: false);
+                                            hospitalProvider.fetchHospitals(
                                                 reset: true);
                                           },
                                         ),
                                       ),
                                     ],
                                   ),
-                                  // SizedBox(height: 10),
-                                  // Row(
-                                  //   children: [
-                                  //     Expanded(
-                                  //       child: TextField(
-                                  //         controller:
-                                  //             _searchSpecialtyController,
-                                  //         decoration: InputDecoration(
-                                  //           hintText:
-                                  //               'Cari berdasarkan spesialisasi...',
-                                  //           contentPadding:
-                                  //               EdgeInsets.symmetric(
-                                  //                   horizontal: 10.0),
-                                  //           border: OutlineInputBorder(
-                                  //             borderRadius:
-                                  //                 BorderRadius.circular(10.0),
-                                  //           ),
-                                  //           filled: true,
-                                  //           fillColor: khakiColor,
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //     SizedBox(
-                                  //       width: 10,
-                                  //     ),
-                                  //     Container(
-                                  //       decoration: BoxDecoration(
-                                  //         color: alertColor,
-                                  //         borderRadius:
-                                  //             BorderRadius.circular(10.0),
-                                  //       ),
-                                  //       child: IconButton(
-                                  //         icon: Icon(Icons.search,
-                                  //             color: lightColor),
-                                  //         onPressed: () {
-                                  //           final doctorProvider =
-                                  //               Provider.of<DoctorProvider>(
-                                  //                   context,
-                                  //                   listen: false);
-                                  //           doctorProvider
-                                  //               .fetchDoctorsBySpecialty(
-                                  //                   _searchSpecialtyController
-                                  //                       .text,
-                                  //                   reset: true);
-                                  //         },
-                                  //       ),
-                                  //     ),
-                                  //   ],
-                                  // ),
                                 ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Consumer<DoctorProvider>(
-                        builder: (context, doctorProvider, child) {
-                          if (doctorProvider.isLoading) {
+                      Consumer<HospitalProvider>(
+                        builder: (context, hospitalProvider, child) {
+                          if (hospitalProvider.isLoading) {
                             return Center(child: CircularProgressIndicator());
                           }
-                          return Column(
-                            children: doctorProvider.doctors.map((doctor) {
+                          if (hospitalProvider.hospitals.isEmpty) {
+                            return Center(
+                              child: Text(
+                                'Tidak ada rumah sakit ditemukan',
+                                style: lightTextStyle,
+                              ),
+                            );
+                          }
+                          return ListView.builder(
+                            controller: scrollController,
+                            shrinkWrap: true,
+                            itemCount: hospitalProvider.hospitals.length,
+                            itemBuilder: (context, index) {
+                              var hospital = hospitalProvider.hospitals[index];
                               return InkWell(
                                 onTap: () {
-                                  // redirectTo(context, "/detail-dokter");
                                   Navigator.pushNamed(
                                     context,
-                                    '/detail-dokter',
-                                    arguments: doctor.id,
+                                    '/detail-rumah-sakit',
+                                    arguments: hospital.id,
                                   );
                                 },
                                 child: ListTile(
                                   title: Text(
-                                    doctor.name,
+                                    hospital.name,
                                     style: lightTextStyle.copyWith(
                                         fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
-                                    doctor.specialty,
+                                    hospital.address,
                                     style: TextStyle(
                                         fontSize: 12, color: Colors.amber),
                                   ),
-                                  trailing: Text(
-                                    '10 KM',
-                                    style: lightTextStyle.copyWith(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                  trailing: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Latitude: ${hospital.lattitude}',
+                                        style: lightTextStyle.copyWith(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'Longitude: ${hospital.longitude}',
+                                        style: lightTextStyle.copyWith(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
                                   ),
                                   leading: CircleAvatar(
-                                    child: Icon(Icons.person),
+                                    child: Icon(Icons.local_hospital),
                                   ),
                                 ),
                               );
-                            }).toList(),
+                            },
                           );
                         },
                       ),
