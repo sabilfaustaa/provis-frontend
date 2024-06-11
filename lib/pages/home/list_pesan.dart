@@ -12,7 +12,7 @@ class ListPesanPage extends StatefulWidget {
 }
 
 class _ListPesanPageState extends State<ListPesanPage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   void _selectTab(int index) {
     setState(() {
       _selectedIndex = index;
@@ -36,12 +36,15 @@ class _ListPesanPageState extends State<ListPesanPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back, color: lightColor),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                      SizedBox(
+                        width: 5,
                       ),
+                      // IconButton(
+                      //   icon: Icon(Icons.arrow_back, color: lightColor),
+                      //   onPressed: () {
+                      //     Navigator.of(context).pop();
+                      //   },
+                      // ),
                       Text(
                         'Pesan',
                         style: lightTextStyle.copyWith(

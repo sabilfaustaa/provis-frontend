@@ -5,7 +5,7 @@ class UserModel {
   String username;
   String role;
   String accessToken;
-  PatientModel? patient;
+  Patient? patient;
 
   UserModel({
     required this.id,
@@ -21,9 +21,8 @@ class UserModel {
       username: json['username'],
       role: json['role'],
       accessToken: json['access_token'],
-      patient: json['patient'] != null
-          ? PatientModel.fromJson(json['patient'])
-          : null,
+      patient:
+          json['patient'] != null ? Patient.fromJson(json['patient']) : null,
     );
   }
 

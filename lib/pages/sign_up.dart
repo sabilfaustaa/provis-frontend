@@ -24,6 +24,10 @@ class _SignUpPageState extends State<SignUpPage> {
       TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _bmiController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +198,11 @@ class _SignUpPageState extends State<SignUpPage> {
         'allergy_year': "-",
         'medical_record': _riwayatPenyakitController.text,
         'password': _passwordController.text,
-        'bpjs_status': false, // atau sesuai kebutuhan
+        'weight': _heightController.text,
+        'height': _weightController.text,
+        'bmi': _bmiController.text,
+        'age': "22",
+        'bpjs_status': false,
       };
 
       bool isCreatePatientSuccess =
@@ -329,7 +337,34 @@ class _SignUpPageState extends State<SignUpPage> {
           controller: _riwayatPenyakitController,
           hint: 'Masukan riwayat penyakit/alergi beserta tahun mengalaminya',
           obscureText: false,
-          prefixIcon: Icons.healing,
+          prefixIcon: null,
+          iconColor: primaryColor,
+          backgroundColor: khakiColor,
+          maxLines: 6,
+        ),
+        buildTextField(
+          controller: _weightController,
+          hint: 'Masukan Berat Badan',
+          obscureText: false,
+          prefixIcon: null,
+          iconColor: primaryColor,
+          backgroundColor: khakiColor,
+          maxLines: 6,
+        ),
+        buildTextField(
+          controller: _heightController,
+          hint: 'Masukan Tinggi Badan',
+          obscureText: false,
+          prefixIcon: null,
+          iconColor: primaryColor,
+          backgroundColor: khakiColor,
+          maxLines: 6,
+        ),
+        buildTextField(
+          controller: _bmiController,
+          hint: 'Masukan BMI',
+          obscureText: false,
+          prefixIcon: null,
           iconColor: primaryColor,
           backgroundColor: khakiColor,
           maxLines: 6,

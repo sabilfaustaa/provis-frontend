@@ -60,7 +60,7 @@ class AuthProvider with ChangeNotifier {
     return null;
   }
 
-  Future<PatientModel?> _fetchPatientDetail(int userId, String token) async {
+  Future<Patient?> _fetchPatientDetail(int userId, String token) async {
     var url = Uri.parse('$endpoint/patientUID/$userId');
     var response = await http.get(
       url,
@@ -72,7 +72,7 @@ class AuthProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
-      return PatientModel.fromJson(jsonResponse);
+      return Patient.fromJson(jsonResponse);
     }
     return null;
   }
@@ -163,5 +163,30 @@ class AuthProvider with ChangeNotifier {
 
   bool isAuthenticated() {
     return _user != null;
+  }
+
+  Future<bool> updateUserProfile(Map<String, dynamic> data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_token');
+    int? userId = prefs.getInt('user_id');
+
+    if (token == null || userId == null) {
+      return false;
+    }
+
+    final response = await http.put(
+      Uri.parse('http://127.0.0.1:8000/patient/$userId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

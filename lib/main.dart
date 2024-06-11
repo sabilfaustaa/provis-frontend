@@ -6,8 +6,7 @@ import 'package:digisehat/pages/home/list_pesan.dart';
 import 'package:digisehat/pages/home/notifikasi.dart';
 import 'package:digisehat/pages/home/obat_pasien.dart';
 import 'package:digisehat/pages/home/pesan.dart';
-import 'package:digisehat/pages/home/riwayat_konsultasi.dart';
-import 'package:digisehat/pages/home/riwayat_transaksi.dart';
+import 'package:digisehat/pages/home/riwayat_page.dart';
 import 'package:digisehat/providers/doctor_provider.dart';
 import 'package:digisehat/providers/konsultasi_provider.dart';
 import 'package:flutter/material.dart';
@@ -65,10 +64,7 @@ class MyApp extends StatelessWidget {
                 AuthGuard(child: InputDiagnosaPasienPage()),
             '/diagnosa-pasien': (context) =>
                 AuthGuard(child: DiagnosaPasienPage()),
-            '/riwayat-transaksi': (context) =>
-                AuthGuard(child: RiwayatTransaksiPage()),
-            '/riwayat-konsultasi': (context) =>
-                AuthGuard(child: RiwayatKonsultasiPage()),
+            '/riwayat': (context) => AuthGuard(child: RiwayatPage()),
             '/panduan-aplikasi': (context) =>
                 AuthGuard(child: PanduanAplikasiPage()),
             '/panduan-obat': (context) => AuthGuard(child: PanduanObatPage()),
