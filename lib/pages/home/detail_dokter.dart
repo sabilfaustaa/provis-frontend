@@ -65,16 +65,19 @@ class _DetailDokterPageState extends State<DetailDokterPage> {
     if (_selectedDate != null && _selectedTime != null) {
       String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
       var authProvider = Provider.of<AuthProvider>(context, listen: false);
-      bool success = await Provider.of<DoctorProvider>(context, listen: false)
-          .createSchedule(
-              Provider.of<DoctorProvider>(context, listen: false).doctor!.id,
-              formattedDate,
-              _selectedTime!,
-              Provider.of<DoctorProvider>(context, listen: false)
-                  .doctor!
-                  .hospital,
-              authProvider.user!.id,
-              generateReservationNum());
+      var doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+      bool success = await doctorProvider.createSchedule(
+        doctorProvider.doctor!.id,
+        formattedDate,
+        _selectedTime!,
+        doctorProvider.doctor!.hospital.toString(),
+        authProvider.user!.id,
+        generateReservationNum(),
+        '08:30', // Example start time
+        '09:00', // Example end time
+        'confirmed', // Example status
+        false, // Example BPJS
+      );
       if (success) {
         Navigator.pushNamed(context, '/jadwal-konsultasi');
       } else {
@@ -458,10 +461,13 @@ class JadwalDokterSelector extends StatelessWidget {
           ),
           SizedBox(height: 8),
           ElevatedButton.icon(
-            icon: Icon(Icons.calendar_today),
-            label: Text(selectedDate == null
-                ? 'Pilih Tanggal'
-                : DateFormat('dd-MM-yyyy').format(selectedDate!)),
+            icon: Icon(Icons.calendar_today, color: lightColor),
+            label: Text(
+              selectedDate == null
+                  ? 'Pilih Tanggal'
+                  : DateFormat('dd-MM-yyyy').format(selectedDate!),
+              style: TextStyle(color: lightColor),
+            ),
             onPressed: () => onDateSelected(),
             style: ElevatedButton.styleFrom(
               backgroundColor: primaryColor,

@@ -2,6 +2,8 @@ import 'package:digisehat/helpers.dart';
 import 'package:digisehat/theme.dart';
 import 'package:digisehat/navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:digisehat/providers/auth_provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -98,58 +100,108 @@ class _HomePageState extends State<HomePage> {
     Container(color: khakiColor),
   ];
 
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Konfirmasi Logout'),
+          content: Text('Apakah Anda yakin ingin logout?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Tidak'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Ya'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _logout();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _logout() async {
+    try {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      await authProvider.logout();
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    } catch (error) {
+      // Handle logout error here
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Logout failed: $error'),
+      //     duration: Duration(seconds: 2),
+      //   ),
+      // );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: darkPrimaryColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Row(
-          children: [
-            Container(
-              width: 32.0,
-              height: 32.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(4.0),
-                image: DecorationImage(
-                  image: AssetImage('profile-home.png'),
-                  fit: BoxFit.cover,
+        title: Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Row(
+              children: [
+                Container(
+                  width: 32.0,
+                  height: 32.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(4.0),
+                    image: DecorationImage(
+                      image: AssetImage('profile-home.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(width: 6),
-            DropdownButton(
-              items: [
-                DropdownMenuItem(
-                  value: "profile",
-                  child: Text("Profil"),
-                  onTap: () {
-                    redirectTo(context, "/profile");
+                SizedBox(width: 6),
+                DropdownButton(
+                  items: [
+                    DropdownMenuItem(
+                      value: "change_password",
+                      child: Text("Ubah Password"),
+                    ),
+                    DropdownMenuItem(
+                      value: "logout",
+                      child: Text("Logout"),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value == "change_password") {
+                      redirectTo(context, "/ubah-password");
+                    } else if (value == "logout") {
+                      _showLogoutConfirmationDialog(context);
+                    }
                   },
-                ),
-                DropdownMenuItem(
-                  value: "change_password",
-                  child: Text("Ubah Password"),
-                  onTap: () {
-                    redirectTo(context, "/ubah-password");
-                  },
+                  hint: Text("Hai, Defrizal", style: lightTextStyle),
+                  underline: Container(),
                 ),
               ],
-              onChanged: (value) {},
-              hint: Text("Hai, Defrizal", style: lightTextStyle),
-              underline: Container(),
-            ),
-          ],
-        ),
+            )),
         actions: [
           IconButton(
             icon: Icon(Icons.phone, color: secondaryColor),
             onPressed: () {},
           ),
+          SizedBox(
+            width: 10,
+          ),
           IconButton(
             icon: Icon(Icons.notification_important, color: alertColor),
+            padding: EdgeInsets.only(right: 20),
             onPressed: () {},
           ),
         ],
@@ -157,40 +209,40 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Cari apa yang kamu butuhkan....',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        filled: true,
-                        fillColor: khakiColor,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: alertColor,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.search, color: lightColor),
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding:
+            //       const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //         child: TextField(
+            //           decoration: InputDecoration(
+            //             hintText: 'Cari apa yang kamu butuhkan....',
+            //             contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+            //             border: OutlineInputBorder(
+            //               borderRadius: BorderRadius.circular(10.0),
+            //             ),
+            //             filled: true,
+            //             fillColor: khakiColor,
+            //           ),
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 10,
+            //       ),
+            //       Container(
+            //         decoration: BoxDecoration(
+            //           color: alertColor,
+            //           borderRadius: BorderRadius.circular(10.0),
+            //         ),
+            //         child: IconButton(
+            //           icon: Icon(Icons.search, color: lightColor),
+            //           onPressed: () {},
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: 16),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: defaultMarginHome),

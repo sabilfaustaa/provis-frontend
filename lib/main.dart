@@ -6,9 +6,9 @@ import 'package:digisehat/pages/home/list_pesan.dart';
 import 'package:digisehat/pages/home/notifikasi.dart';
 import 'package:digisehat/pages/home/obat_pasien.dart';
 import 'package:digisehat/pages/home/pesan.dart';
-import 'package:digisehat/pages/home/riwayat_konsultasi.dart';
-import 'package:digisehat/pages/home/riwayat_transaksi.dart';
+import 'package:digisehat/pages/home/riwayat_page.dart';
 import 'package:digisehat/providers/doctor_provider.dart';
+import 'package:digisehat/providers/konsultasi_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:digisehat/pages/sign_in.dart';
 import 'package:digisehat/pages/sign_up.dart';
@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (_) => AuthProvider()),
           ChangeNotifierProvider(create: (_) => DoctorProvider()),
+          ChangeNotifierProvider(create: (_) => KonsultasiProvider()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -53,18 +54,17 @@ class MyApp extends StatelessWidget {
             '/profile': (context) => AuthGuard(child: ProfilePage()),
             '/cari-dokter': (context) => AuthGuard(child: CariDokterPage()),
             '/detail-dokter': (context) => DetailDokterPage(doctorId: 1),
-            '/jadwal-konsultasi': (context) =>
-                AuthGuard(child: JadwalKonsultasiPage()),
+            '/jadwal-konsultasi': (context) => AuthGuard(
+                    child: JadwalKonsultasiPage(
+                  scheduleId: 1,
+                )),
             '/pesan': (context) => AuthGuard(child: PesanPage()),
             '/list-pesan': (context) => AuthGuard(child: ListPesanPage()),
             '/input-diagnosa-pasien': (context) =>
                 AuthGuard(child: InputDiagnosaPasienPage()),
             '/diagnosa-pasien': (context) =>
                 AuthGuard(child: DiagnosaPasienPage()),
-            '/riwayat-transaksi': (context) =>
-                AuthGuard(child: RiwayatTransaksiPage()),
-            '/riwayat-konsultasi': (context) =>
-                AuthGuard(child: RiwayatKonsultasiPage()),
+            '/riwayat': (context) => AuthGuard(child: RiwayatPage()),
             '/panduan-aplikasi': (context) =>
                 AuthGuard(child: PanduanAplikasiPage()),
             '/panduan-obat': (context) => AuthGuard(child: PanduanObatPage()),

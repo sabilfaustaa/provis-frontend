@@ -1,60 +1,40 @@
+import 'patient.dart'; // Sesuaikan dengan path model PatientModel
+
 class UserModel {
-  final int id;
-  final String username;
-  final String name;
-  final String medicalRecord;
-  final String nik;
-  final String gender;
-  final String address;
-  final String telephone;
-  final String dateOfBirth;
-  final String allergy;
-  final String allergyYear;
-  final String accessToken;
+  int id;
+  String username;
+  String role;
+  String accessToken;
+  Patient? patient;
 
   UserModel({
     required this.id,
     required this.username,
-    required this.name,
-    required this.medicalRecord,
-    required this.nik,
-    required this.gender,
-    required this.address,
-    required this.telephone,
-    required this.dateOfBirth,
-    required this.allergy,
-    required this.allergyYear,
+    required this.role,
     required this.accessToken,
+    this.patient,
   });
-
-  UserModel.fromBasic({
-    required this.id,
-    required this.accessToken,
-  })  : username = '',
-        name = '',
-        medicalRecord = '',
-        nik = '',
-        gender = '',
-        address = '',
-        telephone = '',
-        dateOfBirth = '',
-        allergy = '',
-        allergyYear = '';
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'],
       username: json['username'],
-      name: json['name'],
-      medicalRecord: json['medical_record'],
-      nik: json['nik'],
-      gender: json['gender'],
-      address: json['address'],
-      telephone: json['telephone'],
-      dateOfBirth: json['date_of_birth'],
-      allergy: json['allergy'],
-      allergyYear: json['allergy_year'],
+      role: json['role'],
       accessToken: json['access_token'],
+      patient:
+          json['patient'] != null ? Patient.fromJson(json['patient']) : null,
+    );
+  }
+
+  factory UserModel.fromBasic({
+    required int id,
+    required String accessToken,
+  }) {
+    return UserModel(
+      id: id,
+      username: '',
+      role: '',
+      accessToken: accessToken,
     );
   }
 }

@@ -3,15 +3,20 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
+import '../models/patient.dart';
 
 class AuthProvider with ChangeNotifier {
   String endpoint = "http://127.0.0.1:8000";
   UserModel? _user;
   String? errorMessage;
   bool _isLoading = false;
+  int? _userId;
+  String? _token;
 
   UserModel? get user => _user;
   bool get isLoading => _isLoading;
+  int get userId => _userId!;
+  String get token => _token!;
 
   AuthProvider() {
     _loadUserFromPrefs();
@@ -22,7 +27,7 @@ class AuthProvider with ChangeNotifier {
     String? token = prefs.getString('auth_token');
     int? userId = prefs.getInt('user_id');
     if (token != null && userId != null) {
-      var userInfo = await _fetchUserInfo(userId, token);
+      var userInfo = await fetchUserInfo(userId, token);
       if (userInfo != null) {
         _user = userInfo;
       }
@@ -30,7 +35,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<UserModel?> _fetchUserInfo(int userId, String token) async {
+  Future<UserModel?> fetchUserInfo(int userId, String token) async {
     var url = Uri.parse('$endpoint/user/$userId');
     var response = await http.get(
       url,
@@ -43,7 +48,31 @@ class AuthProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
       jsonResponse['access_token'] = token;
-      return UserModel.fromJson(jsonResponse);
+      var user = UserModel.fromJson(jsonResponse);
+
+      var patientResponse = await _fetchPatientDetail(userId, token);
+      if (patientResponse != null) {
+        user.patient = patientResponse;
+      }
+
+      return user;
+    }
+    return null;
+  }
+
+  Future<Patient?> _fetchPatientDetail(int userId, String token) async {
+    var url = Uri.parse('$endpoint/patientUID/$userId');
+    var response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+      return Patient.fromJson(jsonResponse);
     }
     return null;
   }
@@ -66,11 +95,12 @@ class AuthProvider with ChangeNotifier {
       int userId = jsonResponse['user_id'];
       String accessToken = jsonResponse['access_token'];
       _user = UserModel.fromBasic(id: userId, accessToken: accessToken);
+      _token = accessToken;
       await _saveToken(accessToken);
       await _saveUserId(userId);
 
       // Fetch full user info
-      var userInfo = await _fetchUserInfo(userId, accessToken);
+      var userInfo = await fetchUserInfo(userId, accessToken);
       if (userInfo != null) {
         _user = userInfo;
       }
@@ -85,23 +115,32 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<bool> signUp(Map<String, dynamic> data) async {
-    _isLoading = true;
-    notifyListeners();
-
-    var response = await http.post(
-      Uri.parse("$endpoint/signup"),
-      body: json.encode(data),
+    final url = Uri.parse('$endpoint/signup');
+    final response = await http.post(
+      url,
       headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(data),
     );
 
-    _isLoading = false;
     if (response.statusCode == 200) {
-      notifyListeners();
+      final responseData = jsonDecode(response.body);
+      _userId = responseData['id'];
+      _token = responseData['access_token'];
       return true;
     } else {
-      notifyListeners();
       return false;
     }
+  }
+
+  Future<bool> createPatient(Map<String, dynamic> data) async {
+    final url = Uri.parse('$endpoint/create_patient');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(data),
+    );
+
+    return response.statusCode == 200;
   }
 
   Future<void> _saveToken(String token) async {
@@ -124,5 +163,30 @@ class AuthProvider with ChangeNotifier {
 
   bool isAuthenticated() {
     return _user != null;
+  }
+
+  Future<bool> updateUserProfile(Map<String, dynamic> data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_token');
+    int? userId = prefs.getInt('user_id');
+
+    if (token == null || userId == null) {
+      return false;
+    }
+
+    final response = await http.put(
+      Uri.parse('http://127.0.0.1:8000/patient/$userId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
