@@ -6,15 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CariDokterPage extends StatefulWidget {
+  const CariDokterPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _CariDokterPageState createState() => _CariDokterPageState();
 }
 
 class _CariDokterPageState extends State<CariDokterPage> {
   int _selectedIndex = 0;
-  TextEditingController _searchNameController = TextEditingController();
-  TextEditingController _searchSpecialtyController = TextEditingController();
-  ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchNameController = TextEditingController();
+  final TextEditingController _searchSpecialtyController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -133,7 +136,7 @@ class _CariDokterPageState extends State<CariDokterPage> {
                       ),
                       SizedBox(height: 16),
                       Row(
-                        children: [
+                        children: const [
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
@@ -316,13 +319,13 @@ class _CariDokterPageState extends State<CariDokterPage> {
           ),
           FloatingActionButton(
             onPressed: () {},
+            backgroundColor: alertColor,
+            elevation: 2.0,
+            shape: CircleBorder(),
             child: Icon(
               Icons.warning,
               size: 28,
             ),
-            backgroundColor: alertColor,
-            elevation: 2.0,
-            shape: CircleBorder(),
           ),
           SizedBox(height: 4),
           Text(

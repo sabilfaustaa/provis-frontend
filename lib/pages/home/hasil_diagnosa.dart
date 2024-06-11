@@ -143,7 +143,7 @@ class HasilDiagnosaPage extends StatelessWidget {
                           SizedBox(
                             height: 400, // Tinggi konten
                             child: TabBarView(
-                              children: [
+                              children: const [
                                 GejalaPage(),
                                 DiagnosaPage(),
                                 DaftarObatPage(),
