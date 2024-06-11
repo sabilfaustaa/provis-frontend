@@ -35,7 +35,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<UserModel?> fetchUserInfo(int userId, String token) async {
+  Future<UserModel?> fetchUserInfo(int userId, String? token) async {
     var url = Uri.parse('$endpoint/user/$userId');
     var response = await http.get(
       url,
@@ -60,7 +60,7 @@ class AuthProvider with ChangeNotifier {
     return null;
   }
 
-  Future<Patient?> _fetchPatientDetail(int userId, String token) async {
+  Future<Patient?> _fetchPatientDetail(int userId, String? token) async {
     var url = Uri.parse('$endpoint/patientUID/$userId');
     var response = await http.get(
       url,
@@ -184,6 +184,14 @@ class AuthProvider with ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('auth_token');
+
+      var userInfo = await fetchUserInfo(userId, token);
+      if (userInfo != null) {
+        _user = userInfo;
+      }
+
       return true;
     } else {
       return false;
