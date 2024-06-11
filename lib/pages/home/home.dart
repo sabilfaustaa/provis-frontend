@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:digisehat/providers/auth_provider.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -169,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(width: 6),
                 DropdownButton(
-                  items: [
+                  items: const [
                     DropdownMenuItem(
                       value: "change_password",
                       child: Text("Ubah Password"),
@@ -202,7 +205,9 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.notification_important, color: alertColor),
             padding: EdgeInsets.only(right: 20),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/notifikasi');
+            },
           ),
         ],
       ),
