@@ -9,7 +9,6 @@ class RumahSakitPage extends StatefulWidget {
   const RumahSakitPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _RumahSakitPageState createState() => _RumahSakitPageState();
 }
 
@@ -26,14 +25,17 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
   }
 
   void _loadInitialHospitals() {
-    final hospitalProvider = Provider.of<HospitalProvider>(context, listen: false);
+    final hospitalProvider =
+        Provider.of<HospitalProvider>(context, listen: false);
     hospitalProvider.reset();
     hospitalProvider.fetchHospitals(reset: true);
   }
 
   void _scrollListener() {
-    final hospitalProvider = Provider.of<HospitalProvider>(context, listen: false);
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+    final hospitalProvider =
+        Provider.of<HospitalProvider>(context, listen: false);
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       hospitalProvider.fetchHospitals();
     }
   }
@@ -143,11 +145,12 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         child: Column(
                           children: [
                             Container(
@@ -160,31 +163,40 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
                                         child: TextField(
                                           controller: _searchNameController,
                                           decoration: InputDecoration(
-                                            hintText: 'Cari berdasarkan nama...',
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 10.0),
+                                            hintText:
+                                                'Cari berdasarkan nama...',
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 10.0),
                                             border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
                                             ),
                                             filled: true,
                                             fillColor: khakiColor,
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
+                                      SizedBox(width: 10),
                                       Container(
                                         decoration: BoxDecoration(
                                           color: alertColor,
-                                          borderRadius: BorderRadius.circular(10.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
                                         ),
                                         child: IconButton(
-                                          icon: Icon(Icons.search, color: lightColor),
+                                          icon: Icon(Icons.search,
+                                              color: lightColor),
                                           onPressed: () {
-                                            final hospitalProvider = Provider.of<HospitalProvider>(context, listen: false);
+                                            final hospitalProvider =
+                                                Provider.of<HospitalProvider>(
+                                                    context,
+                                                    listen: false);
+                                            hospitalProvider.reset();
                                             hospitalProvider.fetchHospitals(
-                                                reset: true);
+                                                reset: true,
+                                                query:
+                                                    _searchNameController.text);
                                           },
                                         ),
                                       ),
@@ -237,12 +249,12 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
                                   trailing: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        'Latitude: ${hospital.lattitude}',
-                                        style: lightTextStyle.copyWith(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                      // Text(
+                                      //   'Latitude: ${hospital.latitude}',
+                                      //   style: lightTextStyle.copyWith(
+                                      //       fontSize: 14,
+                                      //       fontWeight: FontWeight.bold),
+                                      // ),
                                       Text(
                                         'Longitude: ${hospital.longitude}',
                                         style: lightTextStyle.copyWith(
@@ -260,9 +272,7 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
                           );
                         },
                       ),
-                      SizedBox(
-                        height: 20,
-                      )
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -274,18 +284,13 @@ class _RumahSakitPageState extends State<RumahSakitPage> {
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 15),
           FloatingActionButton(
             onPressed: () {},
             backgroundColor: alertColor,
             elevation: 2.0,
             shape: CircleBorder(),
-            child: Icon(
-              Icons.warning,
-              size: 28,
-            ),
+            child: Icon(Icons.warning, size: 28),
           ),
           SizedBox(height: 4),
           Text(

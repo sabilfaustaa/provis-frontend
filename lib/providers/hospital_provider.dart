@@ -6,21 +6,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/hospital.dart';
 
 class HospitalProvider with ChangeNotifier {
-  final List<Hospital> _hospitals = [];
   Hospital? _hospital;
   bool _isLoading = false;
-  int _skip = 0;
+  List<Hospital> _hospitals = [];
+  int _page = 1;
   final int _limit = 15;
 
   Hospital? get hospital => _hospital;
   List<Hospital> get hospitals => _hospitals;
   bool get isLoading => _isLoading;
 
-  Future<void> fetchHospitals({bool reset = false}) async {
-    if (reset) {
-      _skip = 0;
-      _hospitals.clear();
-    }
+  void reset() {
+    _hospitals = [];
+    _page = 1;
+    notifyListeners();
+  }
+
+  Future<void> fetchHospitals({bool reset = false, String query = ''}) async {
+    // if (reset) {
+    //   reset();
+    // }
+    _hospitals = [];
+    _page = 1;
 
     _isLoading = true;
     notifyListeners();
@@ -29,10 +36,8 @@ class HospitalProvider with ChangeNotifier {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('auth_token');
 
-      var url = Uri.parse(
-          'http://127.0.0.1:8000/hospitals?skip=$_skip&limit=$_limit');
-      var response = await http.get(
-        url,
+      final response = await http.get(
+        Uri.parse('http://127.0.0.1:8000/hospitals?page=$_page&query=$query'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -40,24 +45,19 @@ class HospitalProvider with ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
-        List<Hospital> newHospitals = (jsonResponse as List)
-            .map((hospital) => Hospital.fromJson(hospital))
-            .toList();
-        _hospitals.addAll(newHospitals);
-        _skip += _limit;
-      } else {
-        if (kDebugMode) {
-          print('Failed to load hospitals: ${response.statusCode}');
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final List fetchedHospitals = jsonResponse['data'];
+        if (reset) {
+          _hospitals =
+              fetchedHospitals.map((data) => Hospital.fromJson(data)).toList();
+        } else {
+          _hospitals.addAll(
+              fetchedHospitals.map((data) => Hospital.fromJson(data)).toList());
         }
-        if (kDebugMode) {
-          print('Response body: ${response.body}');
-        }
+        _page++;
       }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error fetching hospitals: $e');
-      }
+    } catch (error) {
+      print("Error fetching hospitals: $error");
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -133,11 +133,5 @@ class HospitalProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
-  }
-
-  void reset() {
-    _hospitals.clear();
-    _skip = 0;
-    notifyListeners();
   }
 }
