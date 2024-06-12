@@ -10,6 +10,7 @@ import 'package:digisehat/pages/home/riwayat_page.dart';
 import 'package:digisehat/providers/doctor_provider.dart';
 import 'package:digisehat/providers/hospital_provider.dart';
 import 'package:digisehat/providers/konsultasi_provider.dart';
+import 'package:digisehat/providers/medicine_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:digisehat/pages/sign_in.dart';
 import 'package:digisehat/pages/sign_up.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => DoctorProvider()),
           ChangeNotifierProvider(create: (_) => HospitalProvider()),
           ChangeNotifierProvider(create: (_) => KonsultasiProvider()),
+          ChangeNotifierProvider(create: (_) => MedicineProvider()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -80,7 +82,7 @@ class MyApp extends StatelessWidget {
                 AuthGuard(child: PanduanAplikasiPage()),
             '/panduan-obat': (context) => AuthGuard(child: PanduanObatPage()),
             '/panduan-fitur': (context) => AuthGuard(child: PanduanFiturPage()),
-            '/obat-pasien': (context) => AuthGuard(child: ObatPasienPage()),
+            '/obat-pasien': (context) => AuthGuard(child: MedicineListPage()),
             '/notifikasi': (context) => AuthGuard(child: NotifikasiPage()),
             '/rumah-sakit': (context) => AuthGuard(child: RumahSakitPage()),
           },

@@ -136,7 +136,7 @@ class _CariDokterPageState extends State<CariDokterPage> {
                       ),
                       SizedBox(height: 16),
                       Row(
-                        children: const [
+                        children: [
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
@@ -319,13 +319,13 @@ class _CariDokterPageState extends State<CariDokterPage> {
           ),
           FloatingActionButton(
             onPressed: () {},
-            backgroundColor: alertColor,
-            elevation: 2.0,
-            shape: CircleBorder(),
             child: Icon(
               Icons.warning,
               size: 28,
             ),
+            backgroundColor: alertColor,
+            elevation: 2.0,
+            shape: CircleBorder(),
           ),
           SizedBox(height: 4),
           Text(
