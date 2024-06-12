@@ -4,7 +4,7 @@ import 'package:digisehat/models/user.dart';
 class ConsultationSchedule {
   final int id;
   final int doctorId;
-  final String? date; // Nullable
+  final String date; // Nullable
   final String timeStart;
   final String timeEnd;
   final String location;
@@ -18,7 +18,7 @@ class ConsultationSchedule {
   ConsultationSchedule({
     required this.id,
     required this.doctorId,
-    this.date,
+    required this.date,
     required this.timeStart,
     required this.timeEnd,
     required this.location,

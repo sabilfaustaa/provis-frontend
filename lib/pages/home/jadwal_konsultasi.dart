@@ -1,3 +1,4 @@
+import 'package:digisehat/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:digisehat/theme.dart';
@@ -5,6 +6,9 @@ import 'package:digisehat/component.dart';
 import 'package:digisehat/helpers.dart';
 import 'package:digisehat/providers/konsultasi_provider.dart';
 import 'package:digisehat/models/consultation_schedule.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:digisehat/providers/auth_provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class JadwalKonsultasiPage extends StatefulWidget {
   final int scheduleId;
@@ -17,14 +21,35 @@ class JadwalKonsultasiPage extends StatefulWidget {
 
 class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
   Future<ConsultationSchedule?>? _futureSchedule;
+  String? _patientName;
+  String? _patientDateOfBirth;
+  UserModel? _patientData;
 
   @override
   void initState() {
     super.initState();
+    _loadUserData();
     final konsultasiProvider =
         Provider.of<KonsultasiProvider>(context, listen: false);
     _futureSchedule =
         konsultasiProvider.fetchConsultationScheduleById(widget.scheduleId);
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_token');
+    int? userId = prefs.getInt('user_id');
+
+    if (token != null && userId != null) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      setState(() {
+        _patientName = authProvider.user?.patient?.name;
+        _patientDateOfBirth = authProvider.user?.patient?.dateOfBirth;
+        _patientData = authProvider.user;
+      });
+    } else {
+      print('User ID or token not found in SharedPreferences');
+    }
   }
 
   @override
@@ -56,18 +81,20 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // IconButton(
-                            //   icon: Icon(Icons.arrow_back, color: lightColor),
-                            //   onPressed: () {
-                            //     Navigator.of(context).pop();
-                            //   },
-                            // ),
+                            IconButton(
+                              icon: Icon(Icons.arrow_back, color: lightColor),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
                             Text(
                               'Jadwal Konsultasi',
                               style: lightTextStyle.copyWith(
                                   fontSize: 20.0, fontWeight: FontWeight.bold),
                             ),
-                            SizedBox()
                           ],
                         ),
                       ),
@@ -102,7 +129,7 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                               ),
                               SizedBox(height: 16),
                               Text(
-                                schedule.patient?.patient?.name ?? 'No name',
+                                _patientName ?? 'No name',
                                 style: TextStyle(
                                   color: lightColor,
                                   fontSize: 20,
@@ -111,7 +138,7 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                '${schedule.patient?.patient?.dateOfBirth ?? 'N/A'} Tahun | ${schedule.patient?.patient?.dateOfBirth ?? 'N/A'} cm | ${schedule.patient?.patient?.dateOfBirth ?? 'N/A'} Kg',
+                                '${_patientData?.patient?.age ?? 'N/A'} Tahun | ${_patientData?.patient?.height ?? 'N/A'} cm | ${_patientData?.patient?.weight ?? 'N/A'} Kg',
                                 style: TextStyle(
                                   color: lightColor,
                                   fontSize: 16,
@@ -182,7 +209,7 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                                           Icon(Icons.access_time,
                                               color: Colors.white),
                                           SizedBox(width: 8.0),
-                                          Text('Waktu dan Tempat',
+                                          Text('Waktu',
                                               style: TextStyle(
                                                   color: Colors.white)),
                                         ],
@@ -197,16 +224,16 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            schedule.timeStart +
-                                                '-' +
-                                                schedule.timeEnd,
+                                            schedule.date,
                                             style: TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white),
                                           ),
                                           Text(
-                                            schedule.location ?? 'N/A',
+                                            schedule.timeStart +
+                                                '-' +
+                                                schedule.timeEnd,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.white),
@@ -250,7 +277,7 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                                         color: inputColor,
                                         image: DecorationImage(
                                           fit: BoxFit.contain,
-                                          image: AssetImage('assets/ijay.png'),
+                                          image: AssetImage('assets/hanif.png'),
                                         ),
                                       ),
                                       child: Stack(
@@ -276,8 +303,7 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  schedule.doctor?.name ??
-                                                      'N/A',
+                                                  "Hanif",
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 24,
@@ -299,14 +325,14 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                                                 ),
                                                 SizedBox(height: 4),
                                                 Text(
-                                                  '${schedule.doctor?.experience ?? 'N/A'} tahun ++ Pengalaman',
+                                                  '40 tahun ++ Pengalaman',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
                                                   ),
                                                 ),
                                                 Text(
-                                                  '${schedule.doctor?.name ?? 'N/A'} orang Pasien',
+                                                  '20 orang Pasien',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
@@ -350,15 +376,17 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                                           EdgeInsets.symmetric(vertical: 20),
                                       width: double.infinity,
                                       height: 240,
-                                      decoration: BoxDecoration(
-                                        color: inputColor,
-                                        image: DecorationImage(
-                                          fit: BoxFit.contain,
-                                          image:
-                                              AssetImage('assets/barcode.png'),
+                                      color: inputColor,
+                                      child: Center(
+                                        child: QrImageView(
+                                          data:
+                                              schedule.reservationNum ?? 'N/A',
+                                          version: QrVersions.auto,
+                                          size: 200.0,
+                                          foregroundColor: Colors.white,
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -394,8 +422,8 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                                       decoration: BoxDecoration(
                                         color: inputColor,
                                       ),
-                                      child: buildButton(context,
-                                          "Mulai chat dengan ${schedule.doctor?.name}",
+                                      child: buildButton(
+                                          context, "Mulai chat dengan Hanif",
                                           () {
                                         redirectTo(context, "/pesan");
                                       }, orangeColor, lightColor),

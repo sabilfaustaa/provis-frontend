@@ -1,3 +1,4 @@
+import 'package:digisehat/pages/home/jadwal_konsultasi.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -143,7 +144,19 @@ class _RiwayatPageState extends State<RiwayatPage> {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return ConsultationCard(consultation: snapshot.data![index]);
+                return ConsultationCard(
+                  consultation: snapshot.data![index],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => JadwalKonsultasiPage(
+                          scheduleId: snapshot.data![index]['id'],
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
             );
           } else {
@@ -187,61 +200,54 @@ class _RiwayatPageState extends State<RiwayatPage> {
 
 class ConsultationCard extends StatelessWidget {
   final dynamic consultation;
+  final VoidCallback onTap;
 
-  const ConsultationCard({super.key, required this.consultation});
+  const ConsultationCard(
+      {super.key, required this.consultation, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      color: primaryColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: <Widget>[
-            // ClipRRect(
-            //   borderRadius: BorderRadius.only(
-            //     topLeft: Radius.circular(15.0),
-            //     bottomLeft: Radius.circular(15.0),
-            //   ),
-            //   child: Image.network(
-            //     consultation['image_url'] ?? 'assets/dummy-artikel.png',
-            //     height: 130,
-            //     width: 100,
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    consultation['doctor_name'] ?? 'Unknown Doctor',
-                    style: lightTextStyle.copyWith(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Tanggal: ${consultation['date'] ?? 'N/A'}',
-                    style: lightTextStyle,
-                  ),
-                  Text(
-                    'Waktu: ${consultation['timestart']} - ${consultation['timeend']}',
-                    style: lightTextStyle,
-                  ),
-                  Text(
-                    'Lokasi: ${consultation['location'] ?? 'N/A'}',
-                    style: lightTextStyle,
-                  ),
-                ],
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        color: primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        elevation: 5,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      consultation['doctor_name'] ?? 'Unknown Doctor',
+                      style: lightTextStyle.copyWith(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      'Tanggal: ${consultation['date'] ?? 'N/A'}',
+                      style: lightTextStyle,
+                    ),
+                    Text(
+                      'Waktu: ${consultation['timestart']} - ${consultation['timeend']}',
+                      style: lightTextStyle,
+                    ),
+                    Text(
+                      'Lokasi: ${consultation['location'] ?? 'N/A'}',
+                      style: lightTextStyle,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

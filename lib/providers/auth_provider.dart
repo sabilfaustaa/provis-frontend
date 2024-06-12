@@ -197,4 +197,16 @@ class AuthProvider with ChangeNotifier {
       return false;
     }
   }
+
+  Future<UserModel?> getUserData(int id, String token) async {
+    final url = Uri.parse('http://127.0.0.1:8000/user/$id');
+    final response =
+        await http.get(url, headers: {'Authorization': 'Bearer $token'});
+
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load user data');
+    }
+  }
 }
