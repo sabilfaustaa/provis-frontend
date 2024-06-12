@@ -173,10 +173,10 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(width: 6),
                 DropdownButton(
                   items: const [
-                    DropdownMenuItem(
-                      value: "change_password",
-                      child: Text("Ubah Password"),
-                    ),
+                    // DropdownMenuItem(
+                    //   value: "change_password",
+                    //   child: Text("Ubah Password"),
+                    // ),
                     DropdownMenuItem(
                       value: "logout",
                       child: Text("Logout"),
