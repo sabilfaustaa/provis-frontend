@@ -1,7 +1,10 @@
 import 'package:digisehat/no_auth_guard.dart';
+import 'package:digisehat/pages/home/cari_dokter_online.dart';
+import 'package:digisehat/pages/home/detail_dokter_online.dart';
 import 'package:digisehat/pages/home/diagnosa_pasien.dart';
 import 'package:digisehat/pages/home/input_diagnosa_paien.dart';
 import 'package:digisehat/pages/home/jadwal_konsultasi.dart';
+import 'package:digisehat/pages/home/jadwal_konsultasi_online.dart';
 import 'package:digisehat/pages/home/list_pesan.dart';
 import 'package:digisehat/pages/home/notifikasi.dart';
 import 'package:digisehat/pages/home/obat_pasien.dart';
@@ -57,13 +60,25 @@ class MyApp extends StatelessWidget {
             '/sign-up': (context) => NoAuthGuard(child: SignUpPage()),
             '/profile': (context) => AuthGuard(child: ProfilePage()),
             '/cari-dokter': (context) => AuthGuard(child: CariDokterPage()),
+            '/cari-dokter-online': (context) => AuthGuard(child: CariDokterOnlinePage()),
             '/detail-dokter': (context) => AuthGuard(
                   child: DetailDokterPage(
                     doctorId: ModalRoute.of(context)!.settings.arguments as int,
                   ),
                 ),
+            '/detail-dokter-online': (context) => AuthGuard(
+                  child: DetailDokterOnlinePage(
+                    doctorId: ModalRoute.of(context)!.settings.arguments as int,
+                  ),
+                ),
             '/jadwal-konsultasi': (context) => AuthGuard(
                   child: JadwalKonsultasiPage(
+                    scheduleId:
+                        ModalRoute.of(context)!.settings.arguments as int,
+                  ),
+                ),
+            '/jadwal-konsultasi-online': (context) => AuthGuard(
+                  child: JadwalKonsultasiOnlinePage(
                     scheduleId:
                         ModalRoute.of(context)!.settings.arguments as int,
                   ),

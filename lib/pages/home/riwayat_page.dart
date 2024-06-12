@@ -1,4 +1,5 @@
 import 'package:digisehat/pages/home/jadwal_konsultasi.dart';
+import 'package:digisehat/pages/home/jadwal_konsultasi_online.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -79,21 +80,21 @@ class _RiwayatPageState extends State<RiwayatPage> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text('Riwayat',
+          title: Text('Riwayat Konsultasi',
               style: lightTextStyle.copyWith(color: lightColor)),
           backgroundColor: darkPrimaryColor,
-          bottom: TabBar(
-            labelStyle: lightTextStyle,
-            tabs: [
-              Tab(
-                text: 'Konsultasi',
-              ),
-              Tab(
-                text: 'Transaksi',
-              ),
-            ],
-            indicatorColor: lightColor,
-          ),
+          // bottom: TabBar(
+          //   labelStyle: lightTextStyle,
+          //   tabs: [
+          //     Tab(
+          //       text: 'Konsultasi',
+          //     ),
+          //     // Tab(
+          //     //   text: 'Transaksi',
+          //     // ),
+          //   ],
+          //   indicatorColor: lightColor,
+          // ),
         ),
         body: TabBarView(
           children: [
@@ -147,14 +148,25 @@ class _RiwayatPageState extends State<RiwayatPage> {
                 return ConsultationCard(
                   consultation: snapshot.data![index],
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => JadwalKonsultasiPage(
-                          scheduleId: snapshot.data![index]['id'],
+                    if(snapshot.data![index]['date'] == '-') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => JadwalKonsultasiOnlinePage(
+                            scheduleId: snapshot.data![index]['id'],
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => JadwalKonsultasiPage(
+                            scheduleId: snapshot.data![index]['id'],
+                          ),
+                        ),
+                      );
+                    }
                   },
                 );
               },
@@ -232,7 +244,7 @@ class ConsultationCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      'Tanggal: ${consultation['date'] ?? 'N/A'}',
+                      'Tanggal: ${consultation['date'] == "-" ? "ONLINE" : consultation['date']  ?? 'N/A'}',
                       style: lightTextStyle,
                     ),
                     Text(

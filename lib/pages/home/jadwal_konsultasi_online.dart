@@ -10,16 +10,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:digisehat/providers/auth_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class JadwalKonsultasiPage extends StatefulWidget {
+class JadwalKonsultasiOnlinePage extends StatefulWidget {
   final int scheduleId;
 
-  JadwalKonsultasiPage({required this.scheduleId});
+  JadwalKonsultasiOnlinePage({required this.scheduleId});
 
   @override
-  _JadwalKonsultasiPageState createState() => _JadwalKonsultasiPageState();
+  _JadwalKonsultasiOnlinePageState createState() => _JadwalKonsultasiOnlinePageState();
 }
 
-class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
+class _JadwalKonsultasiOnlinePageState extends State<JadwalKonsultasiOnlinePage> {
   Future<ConsultationSchedule?>? _futureSchedule;
   String? _patientName;
   String? _patientDateOfBirth;
@@ -91,7 +91,7 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                               width: 20,
                             ),
                             Text(
-                              'Jadwal Konsultasi',
+                              'Konsultasi Online',
                               style: lightTextStyle.copyWith(
                                   fontSize: 20.0, fontWeight: FontWeight.bold),
                             ),
@@ -152,98 +152,98 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Card(
-                                clipBehavior: Clip.antiAlias,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      color: primaryColor,
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Icon(Icons.assignment_turned_in,
-                                              color: Colors.white),
-                                          SizedBox(width: 8.0),
-                                          Text('Nomor Antrian',
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      color: inputColor,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 20.0, horizontal: 20),
-                                      child: Center(
-                                        child: Text(
-                                          schedule.reservationNum ?? 'N/A',
-                                          style: TextStyle(
-                                              fontSize: 58,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 16),
-                              Card(
-                                clipBehavior: Clip.antiAlias,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      color: primaryColor,
-                                      padding: EdgeInsets.all(
-                                        16.0,
-                                      ),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Icon(Icons.access_time,
-                                              color: Colors.white),
-                                          SizedBox(width: 8.0),
-                                          Text('Waktu',
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      color: inputColor,
-                                      padding: EdgeInsets.all(32.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            schedule.date,
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            schedule.timeStart +
-                                                '-' +
-                                                schedule.timeEnd,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Card(
+                              //   clipBehavior: Clip.antiAlias,
+                              //   shape: RoundedRectangleBorder(
+                              //     borderRadius: BorderRadius.circular(10.0),
+                              //   ),
+                              //   child: Column(
+                              //     children: <Widget>[
+                              //       // Container(
+                              //       //   color: primaryColor,
+                              //       //   padding: EdgeInsets.all(16.0),
+                              //       //   child: Row(
+                              //       //     children: <Widget>[
+                              //       //       Icon(Icons.assignment_turned_in,
+                              //       //           color: Colors.white),
+                              //       //       SizedBox(width: 8.0),
+                              //       //       Text('Nomor Antrian',
+                              //       //           style: TextStyle(
+                              //       //               color: Colors.white)),
+                              //       //     ],
+                              //       //   ),
+                              //       // ),
+                              //       Container(
+                              //         width: double.infinity,
+                              //         color: inputColor,
+                              //         padding: EdgeInsets.symmetric(
+                              //             vertical: 20.0, horizontal: 20),
+                              //         child: Center(
+                              //           child: Text(
+                              //             schedule.reservationNum ?? 'N/A',
+                              //             style: TextStyle(
+                              //                 fontSize: 58,
+                              //                 fontWeight: FontWeight.bold,
+                              //                 color: Colors.white),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                              // SizedBox(height: 16),
+                              // Card(
+                              //   clipBehavior: Clip.antiAlias,
+                              //   shape: RoundedRectangleBorder(
+                              //     borderRadius: BorderRadius.circular(10.0),
+                              //   ),
+                              //   child: Column(
+                              //     children: <Widget>[
+                              //       Container(
+                              //         color: primaryColor,
+                              //         padding: EdgeInsets.all(
+                              //           16.0,
+                              //         ),
+                              //         child: Row(
+                              //           children: <Widget>[
+                              //             Icon(Icons.access_time,
+                              //                 color: Colors.white),
+                              //             SizedBox(width: 8.0),
+                              //             Text('Waktu',
+                              //                 style: TextStyle(
+                              //                     color: Colors.white)),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //       Container(
+                              //         width: double.infinity,
+                              //         color: inputColor,
+                              //         padding: EdgeInsets.all(32.0),
+                              //         child: Column(
+                              //           crossAxisAlignment:
+                              //               CrossAxisAlignment.start,
+                              //           children: <Widget>[
+                              //             Text(
+                              //               schedule.date,
+                              //               style: TextStyle(
+                              //                   fontSize: 24,
+                              //                   fontWeight: FontWeight.bold,
+                              //                   color: Colors.white),
+                              //             ),
+                              //             Text(
+                              //               schedule.timeStart +
+                              //                   '-' +
+                              //                   schedule.timeEnd,
+                              //               style: TextStyle(
+                              //                   fontSize: 18,
+                              //                   color: Colors.white),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                               SizedBox(height: 16),
                               Card(
                                 clipBehavior: Clip.antiAlias,
@@ -347,49 +347,6 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 16),
-                              Card(
-                                clipBehavior: Clip.antiAlias,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      color: primaryColor,
-                                      padding: EdgeInsets.all(
-                                        16.0,
-                                      ),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Icon(Icons.qr_code,
-                                              color: Colors.white),
-                                          SizedBox(width: 8.0),
-                                          Text('Barcode',
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20),
-                                      width: double.infinity,
-                                      height: 240,
-                                      color: inputColor,
-                                      child: Center(
-                                        child: QrImageView(
-                                          data:
-                                              schedule.reservationNum ?? 'N/A',
-                                          version: QrVersions.auto,
-                                          size: 200.0,
-                                          foregroundColor: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                               // SizedBox(height: 16),
                               // Card(
                               //   clipBehavior: Clip.antiAlias,
@@ -405,10 +362,10 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                               //         ),
                               //         child: Row(
                               //           children: <Widget>[
-                              //             Icon(Icons.chat_rounded,
+                              //             Icon(Icons.qr_code,
                               //                 color: Colors.white),
                               //             SizedBox(width: 8.0),
-                              //             Text('Konsultasikan Sekarang',
+                              //             Text('Barcode',
                               //                 style: TextStyle(
                               //                     color: Colors.white)),
                               //           ],
@@ -418,19 +375,62 @@ class _JadwalKonsultasiPageState extends State<JadwalKonsultasiPage> {
                               //         padding:
                               //             EdgeInsets.symmetric(vertical: 20),
                               //         width: double.infinity,
-                              //         height: 100,
-                              //         decoration: BoxDecoration(
-                              //           color: inputColor,
+                              //         height: 240,
+                              //         color: inputColor,
+                              //         child: Center(
+                              //           child: QrImageView(
+                              //             data:
+                              //                 schedule.reservationNum ?? 'N/A',
+                              //             version: QrVersions.auto,
+                              //             size: 200.0,
+                              //             foregroundColor: Colors.white,
+                              //           ),
                               //         ),
-                              //         child: buildButton(
-                              //             context, "Mulai chat dengan Hanif",
-                              //             () {
-                              //           redirectTo(context, "/pesan");
-                              //         }, orangeColor, lightColor),
-                              //       )
+                              //       ),
                               //     ],
                               //   ),
                               // ),
+                              SizedBox(height: 16),
+                              Card(
+                                clipBehavior: Clip.antiAlias,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      color: primaryColor,
+                                      padding: EdgeInsets.all(
+                                        16.0,
+                                      ),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(Icons.chat_rounded,
+                                              color: Colors.white),
+                                          SizedBox(width: 8.0),
+                                          Text('Konsultasikan Sekarang',
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 20),
+                                      width: double.infinity,
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                        color: inputColor,
+                                      ),
+                                      child: buildButton(
+                                          context, "Mulai chat dengan Hanif",
+                                          () {
+                                        redirectTo(context, "/pesan");
+                                      }, orangeColor, lightColor),
+                                    )
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
