@@ -137,7 +137,11 @@ class _RiwayatPageState extends State<RiwayatPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+            return Center(
+                child: Text(
+              "Data tidak tersedia.",
+              style: lightTextStyle,
+            ));
           } else if (snapshot.hasData && snapshot.data!.isEmpty) {
             return Center(
                 child: Text("Data tidak tersedia", style: lightTextStyle));
@@ -148,7 +152,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
                 return ConsultationCard(
                   consultation: snapshot.data![index],
                   onTap: () {
-                    if(snapshot.data![index]['date'] == '-') {
+                    if (snapshot.data![index]['date'] == '-') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -244,7 +248,7 @@ class ConsultationCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      '${consultation['date'] == "-" ? "ONLINE" : consultation['date']  ?? 'N/A'}',
+                      '${consultation['date'] == "-" ? "ONLINE" : consultation['date'] ?? 'N/A'}',
                       style: lightTextStyle,
                     ),
                     Text(
