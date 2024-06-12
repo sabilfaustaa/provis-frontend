@@ -189,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                       _showLogoutConfirmationDialog(context);
                     }
                   },
-                  hint: Text("Hai, Defrizal", style: lightTextStyle),
+                  hint: Text("Hai, Selamat Datang", style: lightTextStyle),
                   underline: Container(),
                 ),
               ],

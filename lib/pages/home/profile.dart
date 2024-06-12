@@ -27,7 +27,8 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _bmiController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
-  final TextEditingController _medicalHistoryController = TextEditingController();
+  final TextEditingController _medicalHistoryController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -138,7 +139,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 130.0,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage('assets/ijay.png'),
+                                image:
+                                    NetworkImage('assets/profile-default.png'),
                                 fit: BoxFit.cover,
                               ),
                               borderRadius: BorderRadius.circular(8.0),
