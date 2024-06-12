@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     },
     {
       'title': 'Janji Online',
-      'redirectLink': '/cari-dokter',
+      'redirectLink': '/cari-dokter-online',
       'src': 'icon_home/janji_online.png',
       'is_disabled': false
     },
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       'title': 'Rumah Sakit',
       'redirectLink': '/rumah-sakit',
       'src': 'icon_home/rumah_sakit.png',
-      'is_disabled': false
+      'is_disabled': true
     },
     {
       'title': 'Rawat Inap',

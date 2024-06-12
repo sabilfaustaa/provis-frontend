@@ -132,7 +132,7 @@ class _PesanPageState extends State<PesanPage> {
                         ),
                         FloatingActionButton(
                           onPressed: () {
-                            redirectTo(context, "/input-diagnosa-pasien");
+                            // redirectTo(context, "/input-diagnosa-pasien");
                           },
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50.0),
