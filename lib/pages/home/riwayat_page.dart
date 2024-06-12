@@ -244,17 +244,17 @@ class ConsultationCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      'Tanggal: ${consultation['date'] == "-" ? "ONLINE" : consultation['date']  ?? 'N/A'}',
+                      '${consultation['date'] == "-" ? "ONLINE" : consultation['date']  ?? 'N/A'}',
                       style: lightTextStyle,
                     ),
                     Text(
-                      'Waktu: ${consultation['timestart']} - ${consultation['timeend']}',
+                      '${consultation['date'] == "-" ? " " : consultation['timestart']}',
                       style: lightTextStyle,
                     ),
-                    Text(
-                      'Lokasi: ${consultation['location'] ?? 'N/A'}',
-                      style: lightTextStyle,
-                    ),
+                    // Text(
+                    //   'Lokasi: ${consultation['location'] ?? 'N/A'}',
+                    //   style: lightTextStyle,
+                    // ),
                   ],
                 ),
               ),
